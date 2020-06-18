@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'goute';
+    src: url('../fonts/Gotu-Regular.ttf') Format('TrueType');
+}
+*{
+    font-family: 'goute',sans-serif;
+}
+html,body{
+    padding: 0;
+    margin: 0;
+}
