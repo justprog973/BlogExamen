@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
+import BlogForm from './Form/BlogFrom';
 import './StyleBlog.css';
 
 const Blog = () =>{
@@ -7,10 +8,7 @@ const Blog = () =>{
         <React.Fragment>
             <Navbar/>
             <div className="container">
-                <div className="sidebar">
-                </div>
-                <div className="blog-body">
-                </div> 
+                <BlogForm/>
             </div>
         </React.Fragment>
     );

@@ -18,7 +18,7 @@
     font-size:15px;
     margin-top: -40px;
 }
-.login{
+.account-container{
     height: 100%;
     display: grid;
 }
@@ -26,13 +26,23 @@
     text-align: center;
 }
 .fieldset{
-    box-shadow: 4px 6px 10px rgba(0, 0, 0, .1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .1);
     align-self: center;
     justify-self: center;
-    height: 360px;
+    height: auto;
     width: 400px;
     color: #3A3A3A;
-    background-color: #f3f3f3;
+    background-color: #ffffff;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    transition: .5s all;
+    -webkit-transition: .5s all;
+    -moz-transition: .5s all;
+    -ms-transition: .5s all;
+    -o-transition: .5s all;
 }
 .form-group{
     display: grid;
@@ -45,40 +55,39 @@
     padding-left: 10px;
     font-size: 16px;
 }
-.form-group input::placeholder{
-    font-size: 16px;
-}
 .form-group label{
-    Font-size: 20px;
     margin-left: 75px;
 }
 .form-button{
-    display: grid;
-    height: 100%;
-    grid-template: 1fr / 1fr;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    align-items: center;
 }
-.form-button button{
-    margin-top: 10px;
-    justify-self: center;
-    text-transform: uppercase;
-    box-shadow: 4px 6px 10px rgba(0, 0, 0, .2);
+.mb-10{
+    margin-bottom: 10px;
 }
-.form-button button:hover{
+.form-button .btn-login:hover{
     cursor: pointer;
     background-color: rgb(87, 173, 180);
 }
-.form-button button:focus{
-    border: 3px solid lightgrey;
-    outline: none
-}
 .form-group input:focus{
-    border: 2px solid lightgrey;
+    border-color: rgb(121, 183, 187) !important;
     outline: none;
     transition: border .1s;
     -webkit-transition: border .1s;
     -moz-transition: border .1s;
     -ms-transition: border .1s;
     -o-transition: border .1s;
+}
+.error-login{
+    color: red;
+    width: 260px;
+    margin: auto;
+    font-size: 11px;
+}
+.form-link a:hover{
+    color: rgb(87, 173, 180);
 }
 .welcome-svg{
     width: 300px;
@@ -99,10 +108,18 @@
     .welcome-svg{
         width: 200px;
     }
+    .account-container{
+        margin: 30px;
+    }
 }
 
 @media screen and (max-width: 500px){
+    .account-container{
+        padding: 0;
+        margin: 15px 0 15px 0 ;
+    }
     .fieldset{
+        background-color: #f3f3f3;
         box-shadow: none;
         align-self: center;
         justify-self: center;
@@ -110,6 +127,8 @@
         width: 100%;
     }
     .form-group label{
-        margin-left: 125px;
+        width: 260px;
+        margin-left: 10px;
+        justify-self: center;
     }
 }

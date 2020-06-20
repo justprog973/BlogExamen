@@ -16,7 +16,7 @@ const Navbar = () =>{
         <header className="header">
             <nav className="navbar">
                 <div className="navbar-brand">
-                    Aside Blog
+                    Story Blog
                 </div>
                 <ul className="navbar-nav" id='nav'>
                     <li className="navbar-link">
