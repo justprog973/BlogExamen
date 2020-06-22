@@ -4,7 +4,8 @@ import StyledInput from '../Styled/StyledInput';
 
 
 const Input = (props) =>{
-    return(<StyledInput 
+    return(<StyledInput
+        name = {props.name} 
         style={props} 
         type={props.type} 
         placeholder={props.placeholder}

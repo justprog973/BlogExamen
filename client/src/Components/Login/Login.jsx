@@ -1,34 +1,45 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect,useCallback} from 'react';
 import './StyleAccount.css';
 import Button from '../../Elements/Components/Button';
 import Input from '../../Elements/Components/Input';
 import welcomeSvg from '../../assets/img/welcome.svg';
+import {formDataToJSON} from '../../utils/formData';
 
-const Login = () => {
+export default () => {
     const [status,setStatus] = useState(true);
-    return( 
-    <div className="grid-container">
-        <div className="illustrator">
-            <h1 className="title-login">Story Blog </h1>
-            <p className="base-line-login">Une histoire ça vous dit ?</p>
-            <div className="welcome-svg">
-                <img src={welcomeSvg} alt='welcome' />
-            </div>
-        </div>
-        <div className="account-container">
-            <div className="fieldset">
-                { status ? login() : register()}
-                <div className="form-button mb-10">
-                    <Button type={'button'} width={260} height={42} br={4} onClick={(e)=>{ console.log(e);
-                     setStatus(!status); }} >{ status ? "S'inscrire" : "Se connecter"}</Button>
+    const handleSubmit = useCallback( async (e)=>{
+        e.preventDefault();
+        await fetch("http://localhost:5000/register",{
+            headers : {
+                "Accept" : "apllication/json",
+                "Content-Type" : "application/json"
+        },
+            method: "POST",
+            body : formDataToJSON(e.target)
+    
+        });
+    });
+    return <div className="grid-container">
+                <div className="illustrator">
+                    <h1 className="title-login">Story Blog </h1>
+                    <p className="base-line-login">Une histoire ça vous dit ?</p>
+                    <div className="welcome-svg">
+                        <img src={welcomeSvg} alt='welcome' />
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-);
+                <div className="account-container">
+                    <div className="fieldset">
+                        { status ? Login() : Register(handleSubmit) }
+                        <div className="form-button mb-10">
+                            <Button type={'button'} width={260} height={42} br={4} onClick={()=>{
+                            setStatus(!status); }} >{ status ? "S'inscrire" : "Se connecter"}</Button>
+                        </div>
+                    </div>
+                </div>
+          </div>
 }
 
-const login = () => {
+const Login = () => {
     return <>
         <h2 className="title-fieldset-login">Connexion</h2>
         <form action="#">
@@ -51,36 +62,37 @@ const login = () => {
     </>
 }
 
-const register = () => {
+const Register = (action) => {
+
     return <>
-        <h2 className="title-fieldset-register">S'inscrire</h2>
-        <form action="#">
+        <h2 className="title-fieldset-register">Inscription</h2>
+        <form method="post" onSubmit={action}>
             <div className="form-group">
                 <label forhtml="pseudo" >Pseudo</label>
-                <Input border="1px solid lightgrey" type="text" placeholder="exemple93"
+                <Input name="username" border="1px solid lightgrey" type="text" placeholder="exemple93"
                     className="form-input"/>
                 <span className="error-register"></span>
             </div>
             <div className="form-group">
                 <label forhtml="email" >Email</label>
-                <Input border="1px solid lightgrey" type="email" placeholder="email@exemple.fr"
+                <Input name="email" border="1px solid lightgrey" type="email" placeholder="email@exemple.fr"
                     className="form-input"/>
                 <span className="error-register"></span>
             </div>
             <div className="form-group">
                 <label forhtml="pwd" >Mot de passe</label>
-                <Input border="1px solid lightgrey" type="password" placeholder="*******"
+                <Input name="password" border="1px solid lightgrey" type="password" placeholder="*******"
                     className="form-input"/>
                 <span className="error-register"></span>
             </div>
             <div className="form-group">
                 <label forhtml="pwd">Confirmer le mot de passe</label>
-                <Input border="1px solid lightgrey" type="password" placeholder="*******"
+                <Input name="confirm_password" border="1px solid lightgrey" type="password" placeholder="*******"
                     className="form-input"/>
                 <span className="error-register"></span>
             </div>
             <div className="form-button">
-                <Button type={'button'} color={'#fff'} bg={'rgb(121, 183, 187)'} br={4} width={260}
+                <Button loading={true} type={'submit'} color={'#fff'} bg={'rgb(121, 183, 187)'} br={4} width={260}
                         height={42}>
                     S'enregistrer
                 </Button>
@@ -88,5 +100,3 @@ const register = () => {
         </form>
     </>;
 }
-
-export default Login;
