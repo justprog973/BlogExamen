@@ -1,15 +1,12 @@
 import React from 'react';
 
-import StyledInput from '../Styled/StyledInput';
+import StyledInput from '../styled/styledInput';
 
 
-const Input = (props) =>{
+const Input = ({style,...props}) =>{
     return(<StyledInput
-        name = {props.name} 
-        style={props} 
-        type={props.type} 
-        placeholder={props.placeholder}
-        className={props.className}
+        style={props}
+        {...props} 
         >
     </StyledInput>);
 }

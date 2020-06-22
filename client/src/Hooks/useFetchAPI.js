@@ -13,7 +13,8 @@ export function useFetch(url,params){
         const response = await fetch(url,{
             headers : {
                 'Accept': 'aplication/json'
-            }
+            },
+            method : 'GET'
         });
 
         const responseData = await response.json();

@@ -1,15 +1,10 @@
 import React/*{useState}*/ from 'react';
-//import ReactMarkdow from 'react-markdown';
-import Login from './Components/Login/Login';
-import Blog from './Components/Blog/Blog';
-
+import Sign from './Components/Sign/Sign';
 const App = ()=>{
-    //const [post,setPost] = useState('');
-
         return (
-            <React.StrictMode>
-                <Login/>
-            </React.StrictMode>
+            <React.Fragment>
+                <Sign/>
+            </React.Fragment>
         );
 }
 

@@ -1,13 +1,10 @@
 import React from 'react';
 
-import StyledButton from '../Styled/StyledButton';
+import StyledButton from '../styled/styledButton';
 
 
-const Button = (props) => {
-    return (<StyledButton 
-            className={props.className} 
-            onClick={props.onClick} 
-            type={props.type} style={props} >
+const Button = ({style,...props}) => {
+    return (<StyledButton style={props} {...props}>
             {props.children}</StyledButton>);
 }
 

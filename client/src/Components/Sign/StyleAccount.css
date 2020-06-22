@@ -15,10 +15,11 @@
     box-shadow: 0 3px 10px rgba(0, 0, 0,.3);
 }
 .illustrator p{
-    font-size:15px;
+    font-size:30px;
     margin-top: -40px;
+    color: #3a3a3a;
 }
-.account-container{
+.sign-container{
     height: 100%;
     display: grid;
 }
@@ -44,77 +45,32 @@
     -ms-transition: .5s all;
     -o-transition: .5s all;
 }
-.form-group{
-    display: grid;
-    grid-template: 35px 1fr / 1fr;
-    height: 100%;
-    margin-bottom: 15px;
-}
-.form-group input{
-    justify-self: center;
-    padding-left: 10px;
-    font-size: 16px;
-}
-.form-group label{
-    margin-left: 75px;
-}
-.form-button{
-    display: flex;
-    justify-content: center;
-    padding: 5px;
-    align-items: center;
-}
-.mb-10{
-    margin-bottom: 10px;
-}
-.form-button .btn-login:hover{
-    cursor: pointer;
-    background-color: rgb(87, 173, 180);
-}
-.form-group input:focus{
-    border-color: rgb(121, 183, 187) !important;
-    outline: none;
-    transition: border .1s;
-    -webkit-transition: border .1s;
-    -moz-transition: border .1s;
-    -ms-transition: border .1s;
-    -o-transition: border .1s;
-}
-.error-login{
-    color: red;
-    width: 260px;
-    margin: auto;
-    font-size: 11px;
-}
-.form-link a:hover{
-    color: rgb(87, 173, 180);
-}
 .welcome-svg{
-    width: 300px;
+    width: 500px;
 }
 .welcome-svg img{
     width: 100%;
 }
-@media screen and (max-width : 900px){
+@media screen and (max-width : 1000px){
     .grid-container{
         grid-template: 1fr 3fr / 1fr;
     }
     .illustrator{
-        font-size: 15px;
+        font-size: 30px;
     }
     .illustrator p{
         margin-top: -25px;
     }
     .welcome-svg{
-        width: 200px;
+        width: 300px;
     }
-    .account-container{
+    .sign-container{
         margin: 30px;
     }
 }
 
 @media screen and (max-width: 500px){
-    .account-container{
+    .sign-container{
         padding: 0;
         margin: 15px 0 15px 0 ;
     }
@@ -125,10 +81,5 @@
         justify-self: center;
         height: 100%;
         width: 100%;
-    }
-    .form-group label{
-        width: 260px;
-        margin-left: 10px;
-        justify-self: center;
     }
 }
