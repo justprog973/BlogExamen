@@ -1,32 +1,68 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt        = require('bcrypt');
-const User          = require('../models/Users');
+const User          = require('../models/User');
 
 const initialize = function (passport){
-    const authenticateUser =  function(username, password, done){
-        User.checkIfUnique(username, async function(u){
-                if(u.length > 0){
-                    const match = await bcrypt.compare(password, u[0].password);
-                    if(match){
-                        const user = {
-                            id           : u[0].id,
-                            username     : u[0].username,
-                            email        : u[0].email,
-                            lastname     : u[0].lastname,
-                            firstname    : u[0].firstname,
+    const authenticateUser = async function(username, password, done){
+        let user = {};
+        try{
+            const queryUsername = User.findOne({username : username}).exec();
+            queryUsername.then(async (u)=>{
+                if(!u){
+                    const queryEmail = User.findOne({email : username}).exec();
+                    queryEmail.then(async (e)=>{
+                        if(e){
+                            const match = await bcrypt.compareSync(password,e.password);
+                            if(match){
+                                user.id        = e.id; 
+                                user.username  = e.username;
+                                user.email     = e.email;
+                                user.isAdmin   = e.isAdmin
+                                user.urlAvatar = e.urlAvatar;
+                                user.fisrtname = e.fisrtname;
+                                user.lastname  = e.lastname;
+                                user.created_at= e.created_at;
+                                return done(null,user,{success: {message : "Vous etes a présent connecté."}});
+                            }
+                            return done(null,false, {errors: {password: {message: "Votre mot de passe est incorrect."}}});
+                        }else{
+                            return done(null,false, {errors: {username: {message: "Votre username ou email est incorrect."}}});
                         }
-                        return done(null, user);
-                    }else{
-                        return done(null, false, {errors : {message: "mot de passe incorrect."}});
-                    }     
+                    });
+                }else{
+                    const match = await bcrypt.compareSync(password,u.password);
+                    if(match){
+                        user.id        = u.id; 
+                        user.username  = u.username;
+                        user.email     = u.email;
+                        user.isAdmin   = u.isAdmin
+                        user.urlAvatar = u.urlAvatar;
+                        user.fisrtname = u.fisrtname;
+                        user.lastname  = u.lastname;
+                        user.created_at= u.created_at;
+                        
+                        return done(null,user,{success: {message : "Vous etes a présent connecté."}});
+                    }
+                    return done(null,false, {errors: {password: {message: "Votre mot de passe est incorrect."}}})   
                 }
-                return  done(null, false, {errors : {message: "username ou email incorrect"}});
-        },'username', true);
+            });
+        }catch(err){
+            return res.status(500).json({err});
+        }
     }
 
     passport.use(new LocalStrategy(authenticateUser));
-    passport.serializeUser(function (user, done){ done(null, user.id) });
-    passport.deserializeUser(function (id, done) {User.findBy(id,function (u) { done(null, u[0].id)})});
+    passport.serializeUser((user, done)=>{ done(null, user.id) });
+    passport.deserializeUser((id, done)=>{
+        try{
+            const query = User.findById(id).select('-password').exec();
+            query.then((user)=>{
+                return done(null, {id: user.id, isAdmin: user.isAdmin});
+            });
+        }catch(e){
+            return res.status(500).json({errors :{message: e.message}});
+        }
+    });
 };
 
 module.exports = initialize;

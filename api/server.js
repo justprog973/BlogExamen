@@ -1,5 +1,5 @@
 require('dotenv/config');
-require('./config/database');
+require('./config/config');
 const express                   = require('express');
 const cors                      = require('cors');
 const session                   = require('express-session');  
@@ -8,6 +8,7 @@ const passport                  = require('passport');
 const bodyParser                = require('body-parser');
 const cookieParser              = require('cookie-parser');
 const isAuth                    = require('./middleware/isAuth'); 
+const isAdmin                   = require('./middleware/isAdmin');
 const initializePassport        = require('./middleware/passportConfig');
 
 initializePassport(passport);
@@ -26,6 +27,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use("/",require("./routes/routerIndex"));
 app.use("/user", isAuth, require("./routes/routerUser"));
+app.use("/post", isAuth,require("./routes/routerPost"));
+app.use("/admin", isAuth, isAdmin, require("./routes/routerAdmin"));
 
 // routes
 app.get("/",function(req,res){

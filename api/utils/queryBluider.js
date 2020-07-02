@@ -1,8 +1,0 @@
-
-
-class queryBluider
-{
-    constructor(){
-        super();
-    }
-}
