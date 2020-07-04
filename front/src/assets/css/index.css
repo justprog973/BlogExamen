@@ -3,7 +3,7 @@
     src: url('../fonts/Gotu-Regular.ttf') Format('TrueType');
 }
 *{
-    font-family: 'goute',sans-serif;
+    font-family: 'goute',sans-serif !important;
 }
 html,body{
     padding: 0;

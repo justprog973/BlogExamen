@@ -1,53 +1,36 @@
 import React,{useEffect} from 'react';
-import  './StyleNavbar.css';
-import Button from '../../Elements/Components/Button';
+import  './style_navbar.css';
+import story_blog from '../../assets/img/story_blog_new.svg';
 
-const Navbar = () =>{
+export default () =>{
     useEffect(() =>{
         const icon = document.getElementById('icon');
         const nav  = document.getElementById('nav');
 
         icon.addEventListener('click',()=>{
-            icon.classList.toggle('active');
-            nav.classList.toggle('active');
+            icon.classList.toggle('close');
+            nav.classList.toggle('show');
         });
     });
-    return (
-        <header className="header">
-            <nav className="navbar">
-                <div className="navbar-brand">
-                    Story Blog
+    return <div className="mb-75">
+        <nav className="ui fixed menu navbar">
+            <div className="ui container d-flex-row">
+                <figure className="contains-logo">
+                    <figcaption className="logo">
+                        <img src={story_blog} alt="jp-logo"/>
+                    </figcaption>
+                </figure>
+                <div class="button-menu" id="icon">
+                    <span className="line"></span>
                 </div>
-                <ul className="navbar-nav" id='nav'>
-                    <li className="navbar-link">
-                        <a href="#">Home</a>
-                    </li>
-                    <li className="navbar-link active">
-                        <a href="#">Sign up</a>
-                    </li>
+                <ul class="navbar-nav" id="nav">
+                    <li className="item-link active"><a href="#">Home</a></li>
+                    <li className="item-link"><a href="#">Blog</a></li>
+                    <li className="item-link"><a href="#">Crée</a></li>
+                    <li className="item-link"><a href="#">profile</a></li>
+                    {/* <li className="item-link"><a href="#">Admin</a></li> */}
                 </ul>
-                <div className="icon-content" id="icon">
-                    <span className="icon-burger"></span>
-                </div>
-            </nav>
-            <div className="header-body">
-                <div className="card-header-body">
-                    <h1>Vous avez une histoire ?</h1>
-                    <p>Ne la garder pas pour vous voyons !</p>
-                    <Button
-                        as="a"
-                        href="#" 
-                        color={'#fff'}
-                        bg={'rgb(121, 183, 187)'}
-                        br={3}
-                        width={170}
-                        height={42}
-                    >Raconter</Button>
-                </div>
             </div>
-        </header>
-    );
+        </nav>
+    </div>
 }
-
-
-export default Navbar;

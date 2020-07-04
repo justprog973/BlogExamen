@@ -16,6 +16,6 @@ export function Field ({name, children, type = 'text', error, ...props}) {
         return <div className="form-group">
                     <label forhtml={name} >{children}</label>
                     {input}
-                    <span className="error-user">{error ? error : null }</span>
+                    <div className="error-user">{error ? error : null }</div>
                </div>
 }

@@ -1,44 +1,49 @@
 import React, {useState, useCallback} from 'react';
-import './StyleAccount.css';
-import Button from '../../Elements/components/button';
-import {Field} from '../../Elements/ui/field';
+import './style_sign.css';
+import Button from '../../elements/components/button';
+import {Field} from '../../elements/ui/field';
 import welcomeSvg from '../../assets/img/welcome.svg';
-import {formDataToJSON} from '../../utils/formData';
-import {useLocalStorage} from '../../Hooks/useLocalStorage';
-import {usernameregex,mailregex,passwordregex} from '../../utils/regex';
+import {useLocalStorage} from '../../hooks/useLocalStorage';
+import {usernameregex,emailregex,passwordregex} from '../../utils/regex';
 
 export default () => {
     //HOOKS
     const [status, setStatus] = useLocalStorage('sign', true);
-    const [errors, setError]   = useState({});
+    const [errors, setErrors]  = useState({});
+    let username              = {};
+    let email                 = {};
+    let password              = {};
+    let confirm_password      = {};
+
 
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
         const elements = e.target.elements;
-        if (!usernameregex.test(elements[0].value.trim())) {
-            setError({username: "entre 4 et 10  caractéres, pas de caractéres spéciaux et pas d'espace entre (ex: exA_-973)"});
-            return false;
-        } else if (!mailregex.test(elements[1].value.trim())) {
-            setError({email: "veuillez entrez un mail valide ex : exemple@gmail.com"});
-            return false;
+        if (!usernameregex.regex.test(elements[0].value.trim())) {
+            username={username: usernameregex.message};
+        }else if (elements[0].value.trim() === '') {
+            username={username: "Veuillez rentrer votre username"};
         }
-        if (elements[0].value.trim() === '') {
-            setError({username: "Veuillez rentrer votre username"});
-            return false;
-        } else if (elements[1].value.trim() === '') {
-            setError({email: "Veuillez rentrer votre email."});
-            return false;
+        if (!emailregex.regex.test(elements[1].value.trim())) {
+            email={email: emailregex.message};
+        }else if (elements[1].value.trim() === '') {
+            email={email: "Veuillez rentrer votre email."};
         }
         if (elements[2].value.trim() === '') {
-            setError({password: "Veuillez rentrer un mot de passe"});
-            return false;
-        } else if (!passwordregex.test(elements[2].value.trim())) {
-            setError({password: "au moins 6 caractéres et doit contenir au moins un chiffre."});
-            return false;
+            password={password: "Veuillez entrer un mot de passe"};
+        } else if (!passwordregex.regex.test(elements[2].value.trim())) {
+            password={password: passwordregex.message};
         } else if (elements[2].value.trim() !== elements[3].value.trim()) {
-            setError({confirm_password: "Votre mot de passe est différent."});
-            return false;
+            confirm_password={confirm_password: "Votre mot de passe est différent."};
         }
+        setErrors({...username,
+                    ...email,...password,
+                    ...confirm_password
+                });
+        username              = {};
+        email                 = {};
+        password              = {};
+        confirm_password      = {};
 
     }, []);
 
@@ -46,7 +51,7 @@ export default () => {
     return <div className="grid-container">
                 <div className="illustrator">
                     <h1 className="title-sign">Story Blog </h1>
-                    <p className="base-line-sign">Une histoire ça vous dit ?</p>
+                    <p className="base-line-sign">Une nouvelle ça vous dit ?</p>
                     <div className="welcome-svg">
                         <img src={welcomeSvg} alt='welcome'/>
                     </div>
@@ -56,7 +61,7 @@ export default () => {
                         {status ? SignIn() : SignUp(handleSubmit, errors)}
                         <div className="form-button mb-10">
                             <Button type={'button'} width={260} height={42} br={4}
-                                    onClick={() => setStatus(!status)}>{status ? "S'inscrire" : "Se connecter"}</Button>
+                                    onClick={() => {setStatus(!status); setErrors({});}}>{status ? "S'inscrire" : "Se connecter"}</Button>
                         </div>
                     </div>
                 </div>
@@ -92,14 +97,14 @@ const SignUp = (action, error) => {
     return <>
         <h2 className="title-fieldset-register">Inscription</h2>
         <form method="post" onSubmit={action}>
-            <Field name="username" placeholder="Username" border={error.username ? '1px solid red' : null}
+            <Field name="username" border={error.username ? '1px solid red' : null}
                    error={error.username ? error.username : null}>Username</Field>
             <Field type="email" name="email" placeholder="email@exemple.com"
                    border={error.email ? '1px solid red' : null} error={error.email ? error.email : null}>Email</Field>
-            <Field type="password" name="password" placeholder="********"
+            <Field type="password" name="password"
                    border={error.password ? '1px solid red' : null} error={error.password ? error.password : null}>Mot
                 de passe</Field>
-            <Field type="password" name="confirm_password" placeholder="********"
+            <Field type="password" name="confirm_password"
                    border={error.confirm_password ? '1px solid red' : null}
                    error={error.confirm_password ? error.confirm_password : null}>Confirmer le mot de passe</Field>
             <div className="form-button">
