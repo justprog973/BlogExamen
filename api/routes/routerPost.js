@@ -4,7 +4,6 @@ const importFile = require('../middleware/importFile');
 const resizeFile = require('../middleware/resizeFile');
 
 router.post('/create',importFile.single('attachement'),resizeFile,(req,res)=>{
-    console.log(req);
    // create an object with what the has to send
     let fieldPost = {
         title       : req.body.title,
@@ -15,7 +14,10 @@ router.post('/create',importFile.single('attachement'),resizeFile,(req,res)=>{
         suggested   : req.body.suggested,
         published   : req.body.published
     };
-   console.log(req.user.id);
+   
+   if(!Array.isArray(fieldPost.categories)){
+    fieldPost.categories = fieldPost.categories.split(" ");
+   }
     //object for contain errors
     let title      = {};
     let categories = {};

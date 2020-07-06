@@ -2,5 +2,5 @@ module.exports = function(req, res, next) {
     if(req.isAuthenticated()) {
         return next();
     }
-    return res.status(401).json({errors : "Veillez vous connecter."});
+    return res.status(401).json({errors : {message : "Veillez vous connecter."}});
 }

@@ -3,16 +3,16 @@ const mongoose = require('../config/config');
 const postSchema = new mongoose.Schema({
     title        : {type: String, minlength: 5, required: true, trim:true},
     categories   : [{
-        type     : mongoose.Schema.Types.ObjectId,
         required : true,
+        type     : mongoose.Schema.Types.ObjectId,
         ref      : 'Category'
     }],
     author       : {
-        type     : mongoose.Schema.Types.ObjectId,
         required : true,
+        type     : mongoose.Schema.Types.ObjectId,
         ref      : 'User'
     },
-    content      : {type: String, minlength: 200, required: true, trim:true, unique:true},
+    content      : {type: String, minlength: 1250, maxWidth: 12500, required: true, unique:true},
     attachement  : {type: String, required: true, trim:true},
     suggested    : {type: Boolean, required : true, default: false},
     published    : {type: Boolean, required : true, default: false},

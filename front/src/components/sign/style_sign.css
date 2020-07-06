@@ -4,6 +4,12 @@
     grid-template: 1fr /1fr 1fr;
     background-color: #f3f3f3;
 }
+.w-260{
+    width: 260px !important;
+    display: flex !important;
+    margin: auto !important;
+    margin-bottom: 10px !important;
+}
 .title-sign{
     font-size: 2em;
 }

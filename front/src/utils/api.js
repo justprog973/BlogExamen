@@ -1,11 +1,20 @@
 import {API_URL} from '../config';
 
 /**
+ * Errors send bay
+ */
+export class ApiErrors{
+    constructor(errors){
+        this.errors = errors;
+    }
+}
+
+/**
  * @param {string} endpoint 
  * @param {Object} options 
  */
 export async function apiFetch(endpoint, options) {
-    const response = await fetch(API_URL,endpoint,{
+    const response = await fetch(API_URL+endpoint,{
         credentials: 'include',
         headers: {
             Accept: 'application/json',
@@ -17,6 +26,15 @@ export async function apiFetch(endpoint, options) {
     if(response.ok){
         return responseData;
     }else{
-        throw responseData;
+        if(responseData.errors){
+            throw new ApiErrors(responseData.errors);
+        }
     }
-}   
+}
+
+export function fromToJson(form){
+    let object = {};
+    const formData = new FormData(form);
+    formData.forEach((value,key) => { object[key] = value; });
+    return JSON.stringify(object);
+}

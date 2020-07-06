@@ -2,14 +2,14 @@ const  router = require('express').Router();
 const  bcrypt = require('bcrypt'); 
 const  User   = require('../models/User');
 const  Post   = require('../models/Post');
+const  Category = require('../models/Category');
 const {usernameregex,emailregex,passwordregex} = require('../utils/regex');
 const passport= require('passport');
 
 /**
- * Router to signup an user 
+ * Register user 
  */
 router.post('/register', async function (req, res) {
-
     // create an object with what the has to send
     let fieldUser = {
         username : req.body.username,
@@ -69,31 +69,59 @@ router.post('/register', async function (req, res) {
         return res.status(500).json(err.message);
     }
 });
-
-router.get('/allpost', function (req, res){
+/**
+ * Get all posts
+ */
+router.get('/allposts', function (req, res){
     
     try {
-        const queryPost = Post.find().exc();
-        queryPost.then((p)=>{
-            if(p.err){
-                return res.status(200).json({success: {message: "Il y a pas de post."}});
+        const queryPost = Post.find({}).populate('author','username email').populate('categories').limit(6);
+        queryPost.exec(function(err, p){
+            if(err){
+                return res.status(400).json({errors: {message: err.message}});
             }
-            return res.status(200).json({result :p});
+            return res.status(200).json(p);
         });
+
     }catch(e){
         return res.status(500).json({errors: {message: e.message}});
     }
 });
-
 /**
- * Route to identity user
+ * Get all Categories 
+ */
+router.get('/allcategories',function(req,res){
+    try {
+        const queryCateg = Category.find({});
+        queryCateg.exec(function(err, c){
+            if(err){
+                return res.status(400).json({errors: {message: err.message}});
+            }
+            return res.status(200).json(c);
+        });
+
+    }catch(e){
+        return res.status(500).json({errors: {message: e.message}});
+    }
+});
+/**
+ * Get if user connect
+ */
+router.get('/auth', function(req, res){
+    if(req.user){
+        return res.status(200).json({user: req.user});
+    }
+    return res.status(400).json({user: {message: "Invalid user credentials."}});
+});
+/**
+ * Login user
  */
 router.post('/login', function(req, res, next){
     passport.authenticate('local',function(err, user, info){
             if(err) {return res.status(500).json({errors : {message : err}});}
-            if(!user) {return res.status(403).json(info);}
+            if(!user) {return res.status(400).json(info);}
             req.logIn(user, function(err) {
-                if (err) { return res.status(403).json(err); }
+                if (err) { return res.status(400).json(err); }
                 return res.status(200).json({user});
               });
     })(req, res, next);

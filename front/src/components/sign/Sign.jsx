@@ -1,42 +1,57 @@
-import React, {useState, useCallback} from 'react';
+//React
+import React, {useState, useCallback, useEffect} from 'react';
+import PropTypes from 'prop-types';
+//CSS
 import './style_sign.css';
-import Button from '../../elements/components/button';
-import {Field} from '../../elements/ui/field';
 import welcomeSvg from '../../assets/img/welcome.svg';
+//Eelements Perso
+import {Field} from '../../elements/ui/field';
+import {fromToJson,apiFetch} from '../../utils/api';
 import {useLocalStorage} from '../../hooks/useLocalStorage';
+import {ApiErrors} from '../../utils/api';
+import {ButtonPrimary, ButtonSecondary} from '../../elements/ui/button';
 import {usernameregex,emailregex,passwordregex} from '../../utils/regex';
 
-export default () => {
+/**
+ * Register and connect user
+ * @param {callback} onConnect 
+ */
+export default function Sign ({onConnect}) {
     //HOOKS
     const [status, setStatus] = useLocalStorage('sign', true);
     const [errors, setErrors]  = useState({});
+    const [loading, setLoading] = useState(false);
+    //Object for get Error
     let username              = {};
     let email                 = {};
     let password              = {};
     let confirm_password      = {};
-
-
-    const handleSubmit = useCallback(async (e) => {
+    
+    useEffect(() =>{
+        document.title = "Story Blog | Sign";
+    });
+    const handleSubmitSignup = useCallback(async (e) => {
         e.preventDefault();
+        setLoading(true);
         const elements = e.target.elements;
         if (!usernameregex.regex.test(elements[0].value.trim())) {
             username={username: usernameregex.message};
         }else if (elements[0].value.trim() === '') {
-            username={username: "Veuillez rentrer votre username"};
+            username={username: "Veuillez rentrer votre username."};
         }
         if (!emailregex.regex.test(elements[1].value.trim())) {
             email={email: emailregex.message};
         }else if (elements[1].value.trim() === '') {
-            email={email: "Veuillez rentrer votre email."};
+            email={email: "Veuillez entrer votre email."};
         }
         if (elements[2].value.trim() === '') {
-            password={password: "Veuillez entrer un mot de passe"};
+            password={password: "Veuillez entrer un mot de passe."};
         } else if (!passwordregex.regex.test(elements[2].value.trim())) {
             password={password: passwordregex.message};
         } else if (elements[2].value.trim() !== elements[3].value.trim()) {
             confirm_password={confirm_password: "Votre mot de passe est différent."};
         }
-        setErrors({...username,
+        setErrors({...username, 
                     ...email,...password,
                     ...confirm_password
                 });
@@ -44,8 +59,37 @@ export default () => {
         email                 = {};
         password              = {};
         confirm_password      = {};
+        setLoading(false);  
 
     }, []);
+
+    const handleSubmitSignin = async function (e){
+        setErrors({});
+        setLoading(true);
+        e.preventDefault();
+        const elements = e.target.elements;
+        if (elements[0].value.trim() === '') {
+            username={username:{message: "Veuillez entrer votre username ou email."}};
+        }
+        if (elements[1].value.trim() === '') {
+            password={password:{message: "Veuillez entrer votre mot de passe."}};
+        }
+        if(Object.entries(username).length > 0 || Object.entries(password).length > 0) {
+            setLoading(false);
+            return setErrors({...username,...password});
+        }
+        try{
+           const user = await apiFetch('login',{method: 'POST', body: fromToJson(e.target)});
+           onConnect(user);
+        }catch(e){
+                if(e instanceof ApiErrors){
+                    setErrors(e.errors);
+                }else{
+                    console.log(e);
+                }
+            }
+            setLoading(false);
+    };
 
     //RENDER
     return <div className="grid-container">
@@ -58,30 +102,32 @@ export default () => {
                 </div>
                 <div className="sign-container">
                     <div className="fieldset">
-                        {status ? SignIn() : SignUp(handleSubmit, errors)}
+                        {status ? SignIn(handleSubmitSignin, errors, loading) : SignUp(handleSubmitSignup, errors, loading)}
                         <div className="form-button mb-10">
-                            <Button type={'button'} width={260} height={42} br={4}
-                                    onClick={() => {setStatus(!status); setErrors({});}}>{status ? "S'inscrire" : "Se connecter"}</Button>
+                            <ButtonSecondary onClick={() => {setStatus(!status); setErrors({});}}>
+                                {status ? "S'inscrire" : "Se connecter"}
+                            </ButtonSecondary>
                         </div>
                     </div>
                 </div>
           </div>
 }
 
+Sign.propTypes = {
+    onConnect: PropTypes.func.isRequired
+}
+
 /**
  * return the front connection
  */
-const SignIn = () => {
+const SignIn = (action, error, loading) => {
     return <>
         <h2 className="title-fieldset-sign">Connexion</h2>
-        <form action="#">
-            <Field placeholder="username/email" name="username">Username</Field>
-            <Field type="password" placeholder="********" name="password">Mot de passe</Field>
+        <form onSubmit={action}>
+            <Field placeholder="username/email" name="username" border={error.username ? '1px solid red' : null} error={error.username ? error.username.message : null}>Username</Field>
+            <Field placeholder="***********" type="password" name="password" border={error.password ? '1px solid red' : null} error={error.password ? error.password.message : null}>Mot de passe</Field>
             <div className="form-button">
-                <Button className="btn-sign-in" type={'button'} color={'#fff'} bg={'rgb(121, 183, 187)'} br={4}
-                        width={260} height={42}>
-                    Se connecter
-                </Button>
+                <ButtonPrimary type="submit" loading={loading}>Se connecter</ButtonPrimary> 
             </div>
         </form>
      </>
@@ -92,26 +138,22 @@ const SignIn = () => {
  * @param {action on submit of page} action
  * @param {error} error
  */
-const SignUp = (action, error) => {
-
+const SignUp = (action, error, loading) => {
     return <>
         <h2 className="title-fieldset-register">Inscription</h2>
         <form method="post" onSubmit={action}>
-            <Field name="username" border={error.username ? '1px solid red' : null}
+            <Field placeholder="username" name="username" border={error.username ? '1px solid red' : null}
                    error={error.username ? error.username : null}>Username</Field>
             <Field type="email" name="email" placeholder="email@exemple.com"
                    border={error.email ? '1px solid red' : null} error={error.email ? error.email : null}>Email</Field>
-            <Field type="password" name="password"
+            <Field placeholder="***********" type="password" name="password"
                    border={error.password ? '1px solid red' : null} error={error.password ? error.password : null}>Mot
                 de passe</Field>
-            <Field type="password" name="confirm_password"
+            <Field placeholder="***********" type="password" name="confirm_password"
                    border={error.confirm_password ? '1px solid red' : null}
                    error={error.confirm_password ? error.confirm_password : null}>Confirmer le mot de passe</Field>
             <div className="form-button">
-                <Button type={'submit'} color={'#fff'} bg={'rgb(121, 183, 187)'} br={4} width={260}
-                        height={42}>
-                    S'enregistrer
-                </Button>
+                <ButtonPrimary type="submit" loading={loading}>S'enregister</ButtonPrimary>
             </div>
         </form>
     </>;

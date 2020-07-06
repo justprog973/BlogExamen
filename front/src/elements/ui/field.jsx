@@ -1,6 +1,14 @@
 import React from 'react';
-import Input from '../components/input';
+import StyledInput from '../styled/styledInput';
 import './uiStyle.css';
+
+const Input = ({style,...props}) =>{
+    return(<StyledInput
+        style={props}
+        {...props} 
+        >
+    </StyledInput>);
+}
 
 export function Field ({name, children, type = 'text', error, ...props}) {
     let input = null;

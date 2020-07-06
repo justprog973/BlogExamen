@@ -1,9 +1,3 @@
-.container{
-    display: grid;
-    grid-template: 1fr / 500px 1fr;
-    margin: 30px 50px;
-}
-
 .sidebar{
     grid-column: 1;
     height: 700px;
@@ -15,4 +9,24 @@
     grid-column: 2;
     height: 700px;
     background-color: #f3f3f3;
+}
+.mt-30{
+    margin-top: 30px;
+}
+.mt-10{
+    margin-top: 10px;
+}
+.mt-5{
+    margin-top: 10px !important;
+}
+.content-cards-posts{
+    margin-top: 50px;
+    min-height: calc(1141px - 1141px);
+}
+.card-group{
+    display: flex !important;
+    justify-content: center !important;
+}
+.card-group .ui.card{
+    margin-right: auto;
 }

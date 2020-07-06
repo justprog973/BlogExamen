@@ -1,12 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 @font-face {
     font-family: 'goute';
     src: url('../fonts/Gotu-Regular.ttf') Format('TrueType');
 }
-*{
-    font-family: 'goute',sans-serif !important;
-}
 html,body{
     padding: 0;
+    height: calc(100vh - 80px) !important;
     margin: 0;
-    background-color: #f3f3f3;
+    background-color: #f3f3f3 !important;
+}
+
+body #fonts { 
+font-family: 'Montserrat', sans-serif; 
 }

@@ -1,5 +1,5 @@
 .mb-75{
-    margin-bottom: 74px;
+    margin-bottom: 70px;
 }
 .navbar{
     background: #3F3D56 !important;
@@ -52,7 +52,7 @@
     -ms-transition: background-color .2s;
     -o-transition: background-color .2s;
 }
-.item-link.active a{
+.item-link a.active{
     border-bottom: 4px solid #79B7BB;
     background-color: #E6F2F5;
     color: #4D4D4D;

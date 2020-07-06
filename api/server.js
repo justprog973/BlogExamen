@@ -12,6 +12,11 @@ const isAdmin                   = require('./middleware/isAdmin');
 const initializePassport        = require('./middleware/passportConfig');
 
 initializePassport(passport);
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+
+}
 
 //middleware
 app.use(session({
@@ -19,7 +24,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
 }));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

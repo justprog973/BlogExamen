@@ -7,7 +7,7 @@ module.exports = function(req, res, next){
       jimp.read(req.session.fullPath, (err, file) => {
           if (err) throw err;
           file
-            .resize(250, jimp.AUTO)
+            .resize(320, 320)
             .quality(100) 
             .write(nameFile);
         });

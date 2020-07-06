@@ -4,7 +4,7 @@ const path = require('path');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const dirPath = path.join(__dirname,`../../front/src/uploads/posts`);
+        const dirPath = path.join(__dirname,`../../front/public/uploads/posts`);
         req.session.dirPath = req.session.dirPath = dirPath;
         if(!fs.existsSync(dirPath)){
             fs.mkdirSync(dirPath, {
