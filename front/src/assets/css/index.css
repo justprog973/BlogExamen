@@ -1,15 +1,29 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
-@font-face {
-    font-family: 'goute';
-    src: url('../fonts/Gotu-Regular.ttf') Format('TrueType');
-}
 html,body{
     padding: 0;
-    height: calc(100vh - 80px) !important;
     margin: 0;
+    height: calc(100vh - 90px) !important;
     background-color: #f3f3f3 !important;
+    position: relative;
 }
-
-body #fonts { 
-font-family: 'Montserrat', sans-serif; 
+.app{
+    margin-top: 90px !important;
+    min-height: 100% !important;
+}
+.mt-30{
+    margin-top: 30px;
+}
+.mt-50{
+    margin-top: 50px ;
+}
+.mt-10{
+    margin-top: 10px;
+}
+.mt-70{
+    margin-top: 70px;
+}
+.mt-5{
+    margin-top: 5px;
+}
+.mt-100{
+    margin-top: 100;
 }

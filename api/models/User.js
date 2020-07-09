@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
     password    : {type : String ,required : true , trim:true, minlength: 6},
     firstname   : {type : String , trim:true},
     lastname    : {type : String , trim:true},
+    isActive    : {type : Boolean, required: true, default: true},
     urlAvatar   : {type : String , default : "avatar.png", trim:true},
     isAdmin     : {type: Boolean ,required : true , default: false},
     likes       : [{

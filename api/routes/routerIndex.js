@@ -75,7 +75,7 @@ router.post('/register', async function (req, res) {
 router.get('/allposts', function (req, res){
     
     try {
-        const queryPost = Post.find({}).populate('author','username email').populate('categories').limit(6);
+        const queryPost = Post.find({}).populate('author','username email').populate('categories');
         queryPost.exec(function(err, p){
             if(err){
                 return res.status(400).json({errors: {message: err.message}});
@@ -109,9 +109,9 @@ router.get('/allcategories',function(req,res){
  */
 router.get('/auth', function(req, res){
     if(req.user){
-        return res.status(200).json({user: req.user});
+        return res.status(200).json(req.user);
     }
-    return res.status(400).json({user: {message: "Invalid user credentials."}});
+    return res.status(400).json({message: "Missing credential user."});
 });
 /**
  * Login user

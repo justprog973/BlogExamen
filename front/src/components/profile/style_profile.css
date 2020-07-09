@@ -1,0 +1,31 @@
+.centered-img-profile{
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    position: relative !important;
+    z-index: 2 !important;
+}
+.abstract{
+    position: relative;
+    top: -405px;
+    left: -13px;
+}
+.abstract img{
+    position: absolute;
+    z-index: 1;
+    opacity: .3;
+}
+.fom-index-profile{
+    position: relative;
+    z-index: 2;
+}
+
+@media screen and (max-width:450px){
+    .abstract{
+        width: 300px;
+        top: -190px;
+    }
+    .abstract img{
+        width: 100%;
+    }
+}

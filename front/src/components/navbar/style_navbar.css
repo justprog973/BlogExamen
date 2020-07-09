@@ -1,9 +1,7 @@
-.mb-75{
-    margin-bottom: 70px;
-}
 .navbar{
     background: #3F3D56 !important;
     border-bottom: 4px solid #79B7BB !important;
+    height: 75px;
 }
 .d-flex-row{
     display: flex !important;
@@ -129,6 +127,9 @@
     -ms-transition: all .2s;
     -o-transition: all .2s;
 }
+.item-link.off a{
+    width: 50px;
+}
 @media screen and (max-width: 1000px){
     .navbar-nav{
         display: none !important;
@@ -147,10 +148,17 @@
         display: flex !important;
         width: 100%;
     }
+    .item-link.off button{
+        width: 100%;
+    }
     .navbar{
         padding: 10px;
+        height: auto;
     }
     .button-menu{
         display: flex !important;
+    }
+    .mb-72{
+        margin-bottom: 72px;
     }
 }

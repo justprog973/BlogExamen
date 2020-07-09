@@ -1,5 +1,5 @@
 .grid-container{
-    height: 100vh;
+    height: calc(100vh - 90px);
     display: grid;
     grid-template: 1fr /1fr 1fr;
     background-color: #f3f3f3;
@@ -22,6 +22,7 @@
     align-items: center;
     font-size: 25px ;
     box-shadow: 0 7px 5px 0 rgba(34,36,38,.15);
+    margin-top: -16.7px;
 }
 .illustrator p{
     color: #3a3a3a;
@@ -58,6 +59,14 @@
 }
 .welcome-svg img{
     width: 100%;
+}
+.sign-container{
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
 }
 @media screen and (max-width : 1000px){
     .grid-container{

@@ -6,8 +6,8 @@ const Button = ({style,...props}) => {
             {props.children}</StyledButton>);
 }
 
-export function ButtonPrimary({ children, loading, type = 'button',...props}){
-    if(loading){
+export function ButtonPrimary({ children, loading, loadingApi, type = 'button',...props}){
+    if(loading || loadingApi){
         return <>
         <Button className="ui loading button teal" 
                 type={type} color={'#fff'} 
@@ -35,8 +35,8 @@ export function ButtonPrimary({ children, loading, type = 'button',...props}){
     </>
 }
 
-export function ButtonSecondary({ children, loading, type = 'button',...props}){
-    if(loading){
+export function ButtonSecondary({ children, loading, loadingApi, type = 'button',...props}){
+    if(loading || loadingApi){
         return <>
             <Button
                 className="ui loading button" 

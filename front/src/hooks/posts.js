@@ -21,7 +21,7 @@ export function usePosts(){
 
     return {
         posts: state.posts,
-        fetchPosts: async function(){
+        fetchPosts: async function (){
             if(state.loading || state.posts){
                 return;
             }

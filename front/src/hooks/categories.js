@@ -21,7 +21,7 @@ export function useCategories(){
 
     return {
         categories: state.categories,
-        fetchCategories: async function(){
+        fetchCategories: async function (){
             if(state.loading || state.categories){
                 return null;
             }

@@ -37,7 +37,7 @@ const initialize = function (passport){
         try{
             const query = User.findById(id).select('-password').exec();
             query.then((user)=>{
-                return done(null, {id: user.id, isAdmin: user.isAdmin});
+                return done(null, user);
             });
         }catch(e){
             return done(null,false,{err});
