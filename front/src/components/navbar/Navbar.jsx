@@ -1,6 +1,5 @@
 import React from 'react';
 import  './style_navbar.css';
-import story_blog from '../../assets/img/story_blog_new.svg';
 import {Button} from "semantic-ui-react";
 import {NavLink} from 'react-router-dom';
 import { apiFetch } from '../../utils/api';
@@ -25,7 +24,7 @@ export default ({user,setUser}) =>{
             <div className="ui container d-flex-row">
                 <figure className="contains-logo">
                     <figcaption className="logo">
-                        <img src={story_blog} alt="jp-logo"/>
+                        <img src="/assets/img/story_blog_new.svg" alt="jp-logo"/>
                     </figcaption>
                 </figure>
                 <div className="button-menu" onClick={toggleMenu} id="icon">
@@ -35,6 +34,7 @@ export default ({user,setUser}) =>{
                     <li className="item-link"><NavLink to="/" exact activeClassName="active">Home</NavLink></li>
                     <li className="item-link"><NavLink to="/blog" exact activeClassName="active">Blog</NavLink></li>
                     {!user && <li className="item-link"><NavLink to="/sign" exact activeClassName="active">Connexion</NavLink></li>}
+                    {user && <li className="item-link"><NavLink to="/post">Post</NavLink></li>}
                     {user && <li className="item-link"><NavLink to="/profile">profile</NavLink></li>}
                     {user && <li className="item-link off"><Button circular color="red" icon="power off" onClick={logout}/></li>}
                 </ul>

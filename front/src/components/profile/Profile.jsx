@@ -2,7 +2,6 @@ import React from 'react';
 import { Form, Grid, Header, Button, Label, Segment, Icon} from 'semantic-ui-react';
 import {ButtonPrimary} from '../../elements/ui/button';
 import './style_profile.css';
-import bg from '../../assets/img/bg.png';
 import moment from 'moment';
 moment.locale('fr');
 
@@ -10,7 +9,7 @@ export default function Profile({user}) {
     console.log(user);
 
     return <div className="ui container">
-            <Header as='h2'>
+            <Header as='h1'>
                 <Icon name="user circle" /> Profile de {user.username}
             </Header>
             <Grid>
@@ -57,7 +56,7 @@ export default function Profile({user}) {
                 </Grid.Row>
                 </Grid>
                 <div className="ui abstract">
-                <img src={bg} alt="bg"/>
+                <img src="/assets/img/bg.png" alt="bg"/>
                 </div>
             </Segment>
           </div>

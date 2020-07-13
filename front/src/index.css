@@ -1,29 +1,36 @@
-html,body{
+html, body {
     padding: 0;
     margin: 0;
     height: calc(100vh - 90px) !important;
     background-color: #f3f3f3 !important;
     position: relative;
 }
-.app{
+
+.app {
     margin-top: 90px !important;
     min-height: 100% !important;
 }
-.mt-30{
-    margin-top: 30px;
+
+.mt-30 {
+    margin-top: 30px !important;
 }
-.mt-50{
-    margin-top: 50px ;
+
+.mt-50 {
+    margin-top: 50px;
 }
-.mt-10{
+
+.mt-10 {
     margin-top: 10px;
 }
-.mt-70{
+
+.mt-70 {
     margin-top: 70px;
 }
-.mt-5{
+
+.mt-5 {
     margin-top: 5px;
 }
-.mt-100{
-    margin-top: 100;
+
+.mt-100 {
+    margin-top: 100px;
 }

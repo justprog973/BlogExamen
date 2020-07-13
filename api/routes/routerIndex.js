@@ -7,7 +7,7 @@ const {usernameregex,emailregex,passwordregex} = require('../utils/regex');
 const passport= require('passport');
 
 /**
- * Register user 
+ * Register user
  */
 router.post('/register', async function (req, res) {
     // create an object with what the has to send
@@ -39,8 +39,7 @@ router.post('/register', async function (req, res) {
 
     // encrypt password
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    fieldUser.password = hashedPassword;
+    fieldUser.password = await bcrypt.hash(req.body.password, salt);
     try{ 
         //Check if it's the only username   
         const queryUsername = User.findOne({ username : fieldUser.username}).exec();
@@ -111,7 +110,7 @@ router.get('/auth', function(req, res){
     if(req.user){
         return res.status(200).json(req.user);
     }
-    return res.status(400).json({message: "Missing credential user."});
+    return res.status(400).json({errors: {message: "Missing credential user."}});
 });
 /**
  * Login user

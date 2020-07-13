@@ -23,7 +23,7 @@ export const useApiFetch = function() {
     });
 
     const doFetch = useCallback( async function (endpoint, options) {
-        dispatch({type: 'START_LOADING_API'})
+        dispatch({type: 'START_LOADING_API'});
         try{
             const data = await apiFetch(endpoint, options);
             dispatch({type: 'DATA', data});

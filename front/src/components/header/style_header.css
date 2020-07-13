@@ -1,7 +1,7 @@
 .header-body{
     height: 400px;
     width: 100%;
-    background-image: url("../../assets/img/writer.jpg");
+    background-image: url("/assets/img/writer.jpg");
     background-position: 45% 60%;
     background-repeat: no-repeat;
     background-size: cover;

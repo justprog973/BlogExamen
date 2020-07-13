@@ -22,7 +22,7 @@ export class DataBaseErrors{
  * @param {string} endpoint 
  * @param {Object} options 
  */
-export async function apiFetch(endpoint, options) {
+export async function apiFetch(endpoint, options=[]) {
         const response = await fetch(API_URL+endpoint,{
             credentials: 'include',
             headers: {
@@ -31,6 +31,7 @@ export async function apiFetch(endpoint, options) {
             },
             ...options
         });
+
         const responseData = await response.json();
         if(response.ok){
             return responseData;
@@ -45,5 +46,6 @@ export function fromToJson(form){
     let object = {};
     const formData = new FormData(form);
     formData.forEach((value,key) => { object[key] = value; });
+    console.log(object);
     return JSON.stringify(object);
 }

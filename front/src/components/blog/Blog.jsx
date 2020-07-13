@@ -4,11 +4,12 @@ import React,{useEffect,useState} from 'react';
 import './style_blog.css';
 import {Select, Loader} from 'semantic-ui-react';
 //Elements Perso
-import Header from '../header/Header';
-import {useCategories} from '../../hooks/categories';
-import {usePosts} from '../../hooks/posts';
-import Card from '../../elements/ui/card';
-import Paginated from '../../utils/paginated';
+import Header           from '../header/Header';
+import {useCategories}  from '../../hooks/categories';
+import {usePosts}       from '../../hooks/posts';
+import Card             from '../../elements/ui/card';
+import SelectCategory   from '../../utils/SelectCategory';
+import Paginated        from '../../utils/Paginated';
 
 
 export default function Home  (){
@@ -46,15 +47,7 @@ export default function Home  (){
     );
 }
 
-const SelectCategory = function({categories}){
-    let options = [{key:'all', value:'all', text: 'Categories'}];
-    if(categories !== null){
-        categories.forEach(c =>{
-            options.push({key: c._id, value: c._id, text: c.name});
-        });
-    }
-    return <Select placeholder="Categories" className={categories === null ? "loading" : null} options={options}/>;
-}
+
 
 const CardPost = function ({posts}){
     return posts === null ? <Loader active inline="centered" /> :  <Card post={posts} />;

@@ -16,7 +16,7 @@ const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true,
 
-}
+};
 
 //middleware
 app.use(session({
@@ -26,8 +26,8 @@ app.use(session({
 }));
 app.use(cors(corsOptions));
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/",require("./routes/routerIndex"));

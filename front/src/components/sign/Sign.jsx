@@ -3,7 +3,6 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 //CSS
 import './style_sign.css';
-import welcomeSvg from '../../assets/img/typewriter.svg';
 //Eelements Perso
 import {Field} from '../../elements/ui/field';
 import {fromToJson,apiFetch} from '../../utils/api';
@@ -28,7 +27,7 @@ export default function Sign ({onConnect}) {
     });
 
     //Register user
-    const handleSubmitSignup = async function(e) {
+    const handleSubmitSignUp = async function(e) {
         e.preventDefault();
         setLoading(true);
 
@@ -45,9 +44,9 @@ export default function Sign ({onConnect}) {
             username={username:{message: "Veuillez rentrer votre username."}};
         }
         if (!emailregex.regex.test(elements[1].value.trim())) {
-            email={email: emailregex.message};
+            email={email: {message : emailregex.message}};
         }else if (elements[1].value.trim() === '') {
-            email={email: "Veuillez entrer votre email."};
+            email={email:{message: "Veuillez entrer votre email."} };
         }
         if (elements[2].value.trim() === '') {
             password={password: {message: "Veuillez entrer un mot de passe."}};
@@ -85,7 +84,7 @@ export default function Sign ({onConnect}) {
     };
 
     //Log user 
-    const handleSubmitSignin = async function (e){
+    const handleSubmitSignIn = async function (e){
         setErrors({});
         setLoading(true);
         e.preventDefault();
@@ -124,12 +123,12 @@ export default function Sign ({onConnect}) {
                     <h1 className="title-sign">Story Blog </h1>
                     <p className="base-line-sign">Une nouvelle ça vous dit ?</p>
                     <div className="welcome-svg">
-                        <img src={welcomeSvg} alt='welcome'/>
+                        <img src="/assets/img/typewriter.svg" alt='welcome'/>
                     </div>
                 </div>
                 <div className="sign-container">
                     <div className="fieldset">
-                        {status ? SignIn(handleSubmitSignin, errors, loading) : SignUp(handleSubmitSignup, errors, loading)}
+                        {status ? SignIn(handleSubmitSignIn, errors, loading) : SignUp(handleSubmitSignUp, errors, loading)}
                         <div className="form-button mb-10">
                             <ButtonSecondary onClick={() => {setStatus(!status); setErrors({});}}>
                                 {status ? "S'inscrire" : "Se connecter"}
@@ -171,6 +170,7 @@ const SignIn = (action, error, loading) => {
      </>
 }
 
+
 /**
  * return front registration
  * @param {function} action
@@ -210,3 +210,4 @@ const SignUp = (action, error, loading) => {
         </form>
     </>
 }
+

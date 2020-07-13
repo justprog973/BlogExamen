@@ -1,5 +1,4 @@
 import React,{useEffect} from 'react';
-import Header from '../header/Header';
 
 
 export default function Home () {
@@ -7,7 +6,6 @@ export default function Home () {
         document.title = "Story Blog | Home";
     });
     return <>
-        <Header/>
         <div className="ui container">
             <h1>Home</h1>
         </div>
