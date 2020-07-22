@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 //CSS
 import './style_sign.css';
 //Eelements Perso
-import {Field} from '../../elements/ui/field';
-import {fromToJson,apiFetch} from '../../utils/api';
+import {Field} from '../../elements/ui/Field';
+import {formToJson,apiFetch} from '../../utils/api';
 import {useLocalStorage} from '../../hooks/useLocalStorage';
 import {ApiErrors} from '../../utils/api';
-import {ButtonPrimary, ButtonSecondary} from '../../elements/ui/button';
+import {ButtonPrimary, ButtonSecondary} from '../../elements/ui/Button';
 import {usernameregex,emailregex,passwordregex} from '../../utils/regex';
 
 /**
@@ -66,7 +66,7 @@ export default function Sign ({onConnect}) {
                 });
         }else{
             try{
-                await apiFetch('register',{method: 'POST', body: fromToJson(e.target)});
+                await apiFetch('register',{method: 'POST', body: formToJson(e.target)});
                 setLoading(false);
                 return setStatus(true);
             }catch(e){
@@ -102,7 +102,7 @@ export default function Sign ({onConnect}) {
             return setErrors({...username,...password});
         }else{
             try{
-                const user = await apiFetch('login',{method: 'POST', body: fromToJson(e.target)});
+                const user = await apiFetch('login',{method: 'POST', body: formToJson(e.target)});
                 setLoading(false);
                 return await onConnect(user);
              }catch(e){
@@ -141,7 +141,7 @@ export default function Sign ({onConnect}) {
 
 Sign.propTypes = {
     onConnect: PropTypes.func.isRequired
-}
+};
 
 /**
  * return front connection
@@ -175,6 +175,7 @@ const SignIn = (action, error, loading) => {
  * return front registration
  * @param {function} action
  * @param {Object} error
+ * @param loading
  */
 const SignUp = (action, error, loading) => {
     return <>
@@ -209,5 +210,5 @@ const SignUp = (action, error, loading) => {
             </div>
         </form>
     </>
-}
+};
 

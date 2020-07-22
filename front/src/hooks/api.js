@@ -17,9 +17,9 @@ function reducer (state, action) {
 
 export const useApiFetch = function() {
     const {state, dispatch} = useReducer(reducer, {
-        loadingApi     : false,
+        loading     : false,
         data        : null,
-        errorsApi      : [],
+        errors      : [],
     });
 
     const doFetch = useCallback( async function (endpoint, options) {
@@ -30,12 +30,12 @@ export const useApiFetch = function() {
         }catch(errorsApi){
             dispatch({type: 'ERRORS_API', errorsApi});
         }
-        
+
     }, []);
     
     return {
-        errorsApi   : state.errorsApi,
-        loadingApi  : state.loadingApi,
+        errors   : state.errors,
+        loading  : state.loading,
         data     : state.data,
         doFetch
     }

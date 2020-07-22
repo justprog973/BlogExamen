@@ -9,14 +9,6 @@ const userSchema = new mongoose.Schema({
     isActive    : {type : Boolean, required: true, default: true},
     urlAvatar   : {type : String , default : "avatar.png", trim:true},
     isAdmin     : {type: Boolean ,required : true , default: false},
-    likes       : [{
-        type    :  mongoose.Schema.Types.ObjectId,
-        ref     : 'Post'
-    }],
-    Views       : [{
-        type    : mongoose.Schema.Types.ObjectId,
-        ref     : 'Post'
-    }],
     created_at  : {type : Date , default : Date.now},
     updated_at  : {type : Date , default : Date.now}
 });

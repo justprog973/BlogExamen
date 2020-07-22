@@ -1,13 +1,33 @@
+@font-face {
+    font-family: 'montserrat';
+    src: url("/assets/fonts/Montserrat-Regular") format("ttf");
+}
+@font-face {
+    font-family: 'cinzel';
+    src: url("/assets/fonts/CinzelDecorative-Regular") format("ttf");
+}
 html, body {
     padding: 0;
     margin: 0;
     height: calc(100vh - 90px) !important;
-    background-color: #f3f3f3 !important;
+    background-color: #F4F7FA !important;
     position: relative;
 }
+.font-montserrat{
+    font-family: "montserrat",sans-serif !important;
+}
+.font-cinzel{
+    font-family: "cinzel",sans-serif !important;
+}
+.font-size-20{
+    font-size: 20px !important;
+}
+.font-size-30{
+     font-size: 30px !important;
+ }
 
 .app {
-    margin-top: 90px !important;
+    margin-top: 91px !important;
     min-height: 100% !important;
 }
 
@@ -20,9 +40,11 @@ html, body {
 }
 
 .mt-10 {
-    margin-top: 10px;
+    margin-top: 10px !important;
 }
-
+.mb-10 {
+    margin-bottom: 10px !important;
+}
 .mt-70 {
     margin-top: 70px;
 }
@@ -33,4 +55,16 @@ html, body {
 
 .mt-100 {
     margin-top: 100px;
+}
+.centered-custom{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -10px;
+    height: calc(100vh - 90px) !important;
+}
+@media screen and (max-width: 1000px){
+    .app{
+        margin-top: 89px !important;
+    }
 }

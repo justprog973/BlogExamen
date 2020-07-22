@@ -1,42 +1,51 @@
-import React,{useEffect, useState}    from  'react';
+import React, {useEffect, useState} from 'react';
 import 'react-quill/dist/quill.snow.css'
 import './style_post.css';
-import {Grid,Form, Segment, Header, Icon} from 'semantic-ui-react';
+import {Grid, Segment, Header} from 'semantic-ui-react';
 import PostForm from '../../utils/PostForm';
 import {useCategories}      from '../../hooks/categories';
 import {usePosts} from "../../hooks/posts";
+import TabPost from '../../elements/ui/TabPost';
 
-
-export default function Post(){
+export default function Post({user}){
     const {categories, fetchCategories} = useCategories();
-    const {createPost, loading:loadingPost} = usePosts();
+    const {createPost, updatePost, errors, fetchPostsUser, posts, loading: loadingPost,deletePost} = usePosts();
+    const [editPost, setEditPost] = useState(null);
 
     useEffect(function() {
         fetchCategories();
-    });
+        fetchPostsUser(user._id);
+    },[fetchCategories,fetchPostsUser,user._id]);
 
     return <div className="ui container">
-            <Header as='h1'>
-                <Icon name="newspaper" /> Post
-            </Header>
-            <Segment color="teal">
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column>
-                        <h2>Creer un nouveau post</h2>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <PostForm categories={categories} action={createPost} loadingPost={loadingPost} />
-                </Grid>
-            </Segment>
-            <Grid className="mt-30">
+            <Grid className="mt-30 font-montserrat">
                 <Grid.Row>
                     <Grid.Column >
-                            <Header as="h2">
-                                <Icon name="sync"/> Post en cours
-                            </Header>
+                        <Header as="h2" className="font-cinzel">
+                            Tous vos postes
+                        </Header>
+                        <TabPost posts         ={posts}
+                                 categories    ={categories}
+                                 loading       ={loadingPost}
+                                 deletePost    ={deletePost}
+                                 setEditPost   ={setEditPost}
+                                 editPost      ={editPost}
+                        />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
+            <Header as='h2' className="font-cinzel">
+                { editPost ? `Vous éditez ${editPost.title}` : 'Creer un nouveau post'}
+            </Header>
+            <Segment color="teal">
+                <Grid>
+                    <PostForm categories    ={categories}
+                              errors        ={errors}
+                              action        ={{create: createPost, edit: updatePost}}
+                              editPost      ={editPost}
+                              setEditPost   ={setEditPost}
+                    />
+                </Grid>
+            </Segment>
         </div>
 }

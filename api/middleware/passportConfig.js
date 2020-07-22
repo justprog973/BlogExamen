@@ -11,10 +11,10 @@ const initialize = function (passport){
                 if(u){
                     const match = await bcrypt.compareSync(password,u.password);
                     if(match){
-                                user.id        = u.id; 
+                                user._id        = u.id;
                                 user.username  = u.username;
                                 user.email     = u.email;
-                                user.isAdmin   = u.isAdmin
+                                user.isAdmin   = u.isAdmin;
                                 user.urlAvatar = u.urlAvatar;
                                 user.fisrtname = u.fisrtname;
                                 user.lastname  = u.lastname;
@@ -32,7 +32,7 @@ const initialize = function (passport){
     }
 
     passport.use(new LocalStrategy(authenticateUser));
-    passport.serializeUser((user, done)=>{ done(null, user.id) });
+    passport.serializeUser((user, done)=>{ done(null, user._id) });
     passport.deserializeUser((id, done)=>{
         try{
             const query = User.findById(id).select('-password').exec();

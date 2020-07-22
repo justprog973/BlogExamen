@@ -42,8 +42,8 @@ router.post('/register', async function (req, res) {
     fieldUser.password = await bcrypt.hash(req.body.password, salt);
     try{ 
         //Check if it's the only username   
-        const queryUsername = User.findOne({ username : fieldUser.username}).exec();
-        queryUsername.then((u) =>{
+        const queryUsername = await User.findOne({ username : fieldUser.username}).exec();
+        await queryUsername.then((u) =>{
             if(u){ 
                 username = {username : {message : `L'username ${fieldUser.username} est déjà utilisé.`}};
             }
@@ -71,10 +71,15 @@ router.post('/register', async function (req, res) {
 /**
  * Get all posts
  */
-router.get('/allposts', function (req, res){
+router.get('/allposts/:id?', function (req, res){
     
     try {
-        const queryPost = Post.find({}).populate('author','username email').populate('categories');
+        let queryPost;
+        if(req.params.id){
+            queryPost = Post.find({categories: req.params.id});
+        }else{
+            queryPost = Post.find({});
+        }
         queryPost.exec(function(err, p){
             if(err){
                 return res.status(400).json({errors: {message: err.message}});
@@ -112,6 +117,21 @@ router.get('/auth', function(req, res){
     }
     return res.status(400).json({errors: {message: "Missing credential user."}});
 });
+
+router.get('/singlepost/:id',function (req, res) {
+    try {
+        const post = Post.findById( req.params.id).populate('author','_id username').populate('categories');
+        post.exec(function (err,p){
+            if (err) {
+                return res.status(400).json({errors: {message: err.message}});
+            }
+            return res.status(200).json(p);
+        });
+    } catch (err) {
+        return res.status(500).json({errors: {message: err.message}});
+    }
+});
+
 /**
  * Login user
  */
@@ -121,7 +141,7 @@ router.post('/login', function(req, res, next){
             if(!user) {return res.status(400).json(info);}
             req.logIn(user, function(err) {
                 if (err) { return res.status(400).json(err); }
-                return res.status(200).json({user});
+                return res.status(200).json(user);
               });
     })(req, res, next);
 });

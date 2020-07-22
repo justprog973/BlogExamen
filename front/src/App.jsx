@@ -8,7 +8,6 @@ import 'semantic-ui-css/semantic.min.css';
 //Elements custom
 import {apiFetch} from './utils/api';
 import Router from './components/router/Router';
-import Navbar from "./components/navbar/Navbar";
 
 
 export default function App() {
@@ -27,7 +26,7 @@ export default function App() {
             });
     }, []);
 
-    return <BrowserRouter forceRefresh={true}>
+    return <BrowserRouter>
             <Router user={user} setUser={setUser} loading={loading}/>
         </BrowserRouter>
 };

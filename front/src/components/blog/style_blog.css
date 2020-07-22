@@ -14,10 +14,3 @@
     margin-top: 50px;
     min-height: calc(1141px - 1141px);
 }
-.card-group{
-    display: flex !important;
-    justify-content: center !important;
-}
-.card-group .ui.card{
-    margin-right: auto;
-}

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Form, Grid, Header, Button, Label, Segment, Icon} from 'semantic-ui-react';
-import {ButtonPrimary} from '../../elements/ui/button';
+import {ButtonPrimary} from '../../elements/ui/Button';
 import './style_profile.css';
 import moment from 'moment';
 moment.locale('fr');
 
 export default function Profile({user}) {
     console.log(user);
-
     return <div className="ui container">
             <Header as='h1'>
                 <Icon name="user circle" /> Profile de {user.username}
@@ -23,40 +22,40 @@ export default function Profile({user}) {
                <Grid divided="vertically" verticalAlign='middle' stackable>
                <Grid.Row columns={2}>
                     <Grid.Column className="centered-img-profile">
-                        <img src={`/assets/img/${user.urlAvatar}`}/>
+                        <img src={`/assets/img/${user.urlAvatar}`} alt="avatar"/>
                     </Grid.Column>
                     <Grid.Column className="fom-index-profile">
                     <Form>
                         <Form.Field>
                             <label>Username</label>
-                            <input value={user.username} />
+                            <input defaultValue={user.username} />
                         </Form.Field>
                         <Form.Field>
                             <label>Email</label>
-                            <input value={user.email} disabled/>
+                            <input defaultValue={user.email} disabled/>
                         </Form.Field>
                         <Form.Field>
                             <label>Prénom</label>
-                            <input value={user.firstname}/>
+                            <input defaultValue={user.firstname}/>
                         </Form.Field>
                         <Form.Field>
                             <label>Nom</label>
-                            <input value={user.lastname}/>
+                            <input defaultValue={user.lastname}/>
                         </Form.Field>
                         <Form.Field>
                             <Label size="large">
-                                Date de creatation : {moment(user.created_at).format('MM/DD/YYYY h:mm:ss')}
+                                Date de créatation : {moment(user.created_at).format('DD/MM/YYYY h:mm:ss')}
                             </Label>
                         </Form.Field>
                         <Form.Field>
-                        <ButtonPrimary width={"100%"}>Modifier</ButtonPrimary> 
+                        <ButtonPrimary width={"100%"}>Modifier</ButtonPrimary>
                         </Form.Field>
                     </Form>
                     </Grid.Column>
                 </Grid.Row>
                 </Grid>
                 <div className="ui abstract">
-                <img src="/assets/img/bg.png" alt="bg"/>
+                <img src={"/assets/img/bg.png"} alt="bg"/>
                 </div>
             </Segment>
           </div>

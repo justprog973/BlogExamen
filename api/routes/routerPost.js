@@ -1,56 +1,116 @@
-const router        = require('express').Router();
-const Post          = require('../models/Post');
-const importFile    = require('../middleware/importFile');
-const resizeFile    = require('../middleware/resizeFile');
+const router = require('express').Router();
+const Post = require('../models/Post');
+const path = require('path');
+const fs = require('fs');
+const jimp = require('jimp');
 
-router.post('/create',importFile.single('attachment'),resizeFile,(req,res)=>{
+const dirPath = path.join(__dirname, `../../front/public/uploads/posts`);
 
-   // create an object with what the has to send
+router.post('/create', function (req, res, next) {
+
+    // create an object with what the has to send
     let fieldPost = {
-        title       : req.body.title,
-        categories  : req.body.categories,
-        content     : req.body.content,
-        attachment  : req.files ? req.files.filename : undefined,
-        author      : req.user.id,
-        suggested   : req.body.suggested,
+        title: req.body.title,
+        categories: req.body.categories,
+        content: req.body.content,
+        author: req.user.id,
+        suggested: req.body.suggested,
     };
+    // check if files exist
+    if (req.files !== null) {
 
-    if(!Array.isArray(fieldPost.categories)){
-        fieldPost.categories = fieldPost.categories.split(",");
+        const file = req.files.attachment;
+        const extension = file.mimetype.split('/')[1];
+        const nameFile = `${Date.now() + Math.random()}_post.${extension}`;
+        const fullPath = `${dirPath}/${nameFile}`;
+        try {
+            fieldPost.attachment = nameFile;
+            if (!Array.isArray(fieldPost.categories)) {
+                fieldPost.categories = fieldPost.categories.split(",");
+            }
+            // create and save new post
+            new Post(fieldPost).save().then((save) => {
+                //import file in the directory
+                file.mv(`${dirPath}/${save.attachment}`, function (err) {
+                    if (err) throw err;
+                    next();
+                    // and resize file
+                    jimp.read(fullPath, (err, file) => {
+                        if (err) throw err;
+                        file
+                            .resize(jimp.AUTO, 250)
+                            .quality(100)
+                            .write(`${dirPath}/thumb_${nameFile}`);
+                    });
+                });
+                return res.status(201).json(save);
+            }).catch(e => {
+                return res.status(500).json({
+                    errors: {message: e.message}
+                });
+            });
+        } catch (e) {
+            return res.status(500).json({errors: {message: e.message}});
+        }
     }
-     try{
-        new Post(fieldPost).save().then((save)=>{
-            res.status(201).json({success:{message: `Votre post a bien étè crée.`}});
-        }).catch(e => res.status(500).json({errors: {message: e.message}}));
-    }catch(e){
+
+});
+
+router.delete('/delete/:id',function (req, res) {
+    try{
+        Post.findOneAndRemove({_id: req.params.id}).then(function (p) {
+            fs.unlinkSync(`${dirPath}/${p.attachment}`,function(err) {
+                if(err){
+                    return res.status(500).json({errors: {message: err.message}})
+                }
+            });
+            fs.unlinkSync(`${dirPath}/thumb_${p.attachment}`,function(err) {
+                if(err){
+                    return res.status(500).json({errors: {message: err.message}})
+                }
+            });
+            return res.status(200).json({sucess: {message: 'Poste supprimé avec success.'}});
+        });
+    }catch (e) {
         return res.status(500).json({errors: {message: e.message}});
     }
 });
 
+router.put('/update/:id', function (req, res) {
+    try {
+            if (req.params.id) {
+                let post = Post.findById(req.params.id);
+                post.exec(function (err, p) {
+                    p.title = req.body.title;
+                    p.categories = req.body.categories;
+                    p.content = req.body.content;
+                    p.suggested = req.body.suggested;
+                    p.updated_at = new Date();
+                    p.save(function (err, newP) {
+                        if(err) {
+                            return res.status(400).json({errors: {message: err.message}});
+                        }
+                        return res.status(200).json(newP);
+                    });
+                });
+            }
+    } catch (e) {
+        return res.status(500).json({errors: {message: e.message}})
+    }
+});
+
+router.get('/author/:id', function (req, res) {
+    try {
+        const authorPost = Post.find({author: req.params.id}).populate('author', 'username');
+        authorPost.exec(function (err, c) {
+            if (err) {
+                return res.status(400).json({errors: {message: err.message}});
+            }
+            return res.status(200).json(c);
+        });
+    } catch (err) {
+        return res.status(500).json({errors: {message: err.message}});
+    }
+});
+
 module.exports = router;
-
-
-/**
- //object for contain errors
- let title      = {};
- let categories = {};
- let content    = {};
- let attachment = {};
-
- if(fieldPost.title.trim().length < 5){
-        title = {title: {message: "Le champ titre doit contenir au moins 5 caractéres."}};
-    }
- if(fieldPost.categories.trim().length <= 0){
-        categories = {categories: {message: "Le champ categories est obligatoire."}};
-    }
- if(!attachment){
-        attachment = {attachment: {message: "Le champ attachment est obligatoire."}};
-    }
- if(fieldPost.content.trim().length < 1250 || fieldPost.content.trim().length > 12500){
-        content = {content: {message: "Le champ content doit compoter 1250 à 12500 caractéres."}};
-    }
- let errors = {...title,...categories,...attachment,...content};
- if(Object.entries(errors).length > 0){
-        return res.status(400).json({errors});
-    }
- **/

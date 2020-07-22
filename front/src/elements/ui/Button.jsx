@@ -10,7 +10,7 @@ export function ButtonPrimary({ children, loading, type = 'button',...props}){
     if(loading){
         return <>
         <Button className="ui loading button teal" 
-                type={type} color={'#fff'} 
+                type={type}
                 bg={'rgb(121, 183, 187)'} 
                 br={4}
                 width={260} 
@@ -23,7 +23,7 @@ export function ButtonPrimary({ children, loading, type = 'button',...props}){
     }
     return <>
         <Button className="ui button teal" 
-                type={type} color={'#fff'} 
+                type={type}
                 bg={'rgb(121, 183, 187)'} 
                 br={4}
                 width={260} 
@@ -39,7 +39,7 @@ export function ButtonSecondary({ children, loading, loadingApi, type = 'button'
     if(loading || loadingApi){
         return <>
             <Button
-                className="ui loading button" 
+                className="ui loading button"
                 type={type} 
                 width={260} 
                 height={42} br={4} {...props}>

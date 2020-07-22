@@ -10,7 +10,8 @@ import Profile from '../profile/Profile';
 import Admin from '../admin/Admin';
 import Navbar from '../navbar/Navbar';
 import Post from '../post/Post';
-import Footer from '../footer/Footer';
+import SinglePost from "../singlePost/SinglePost";
+//import Footer from '../footer/Footer';
 
 
 export default function Router({user, setUser, loading}) {
@@ -20,22 +21,28 @@ export default function Router({user, setUser, loading}) {
             <main className="app">
                 <Switch>
                     <Route path={"/"} exact component={Home}/>
+                    {/* Route Blog */}
                     <Route path={"/blog"} exact component={Blog}/>
+                    {/* Route SinglePost */}
+                    <Route path={"/blog/:id"} exact component={SinglePost} />
                     {/* Route Sign */}
-                    {!user && <Route path={"/sign"} exact render={(props) => <Sign {...props} onConnect={setUser}/>}/>}
+                    {!user && <Route path={"/sign"} exact component={(props) => <Sign {...props} onConnect={setUser}/>}/>}
                     {/* Route Profile */}
-                    {user ? <Route path={"/profile"} exact render={(props) => <Profile {...props} user={user}/>}/> :
-                        <Route path={"/profile"} exact render={() => <Redirect to={"/sign"}/>}/>}
+                    {user ? <Route path={"/profile"} exact component={(props) => <Profile {...props} user={user} />}/> :
+                        <Route path={"/profile"} exact component={() => <Redirect to={"/sign"}/>}/>}
                     {/* Route Post */}
-                    {user ? <Route path={"/post"} exact render={(props) => <Post {...props} user={user}/>}/> :
-                        <Route path={"/post"} exact render={() => <Redirect to={"/sign"}/>}/>}
+                    {user ? <Route path={"/post"} exact component={(props) => <Post {...props} user={user}/>}/> :
+                        <Route path={"/post"} exact component={() => <Redirect to={"/sign"}/>}/>}
+                    {/* Route SinglePost */}
+                    <Route path={"/post/:id"} exact component={SinglePost} />
                     {/* Route Sign redirect */}
-                    {user && <Route path={"/sign"} exact render={() => <Redirect to={"/"}/>}/>}
+                    {user && <Route path={"/sign"} exact component={() => <Redirect to={"/"}/>}/>}
                     {/* Route admin */}
                     {user && user.isAdmin ? <Route path={"/admin"} exact component={Admin}/> :
-                        <Route path={"/admin"} exact render={() => <Redirect to={"/"}/>}/>
+                        <Route path={"/admin"} exact component={() => <Redirect to={"/"}/>}/>
                     }
-                    <Route component={() => <div className="ui container"><h1>Error 404 veuillez vous retrouver !</h1>
+                    <Route component={() => <div className="ui container">
+                        <h1>Error 404 veuillez vous retrouver !</h1>
                     </div>}/>
                 </Switch>
             </main>

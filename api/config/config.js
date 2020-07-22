@@ -6,7 +6,8 @@ const paginate                  = require('mongoose-paginate-v2');
 //Connection at database mongoose
 mongoose.connect(process.env.DB_HOST, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify: false
     })
     .then(() => {
         console.log(`you present now connected : ${process.env.DB_HOST}`);

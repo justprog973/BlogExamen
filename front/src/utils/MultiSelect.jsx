@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {Dropdown} from 'semantic-ui-react';
+import React from 'react';
+import {Form} from 'semantic-ui-react';
 
-export default function MultiSelect({categories, value, handleChange, ...props}) {
+export default function MultiSelect({categories,...props}) {
     let options = [];
     if (categories !== null) {
         categories.forEach(c => {
             options.push({key: c._id, value: c._id, text: c.name});
         });
     }
-    return <Dropdown
+    return <Form.Dropdown
         selection
         multiple
         options={options}

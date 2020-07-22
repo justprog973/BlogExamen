@@ -5,11 +5,21 @@ import {NavLink} from 'react-router-dom';
 import { apiFetch } from '../../utils/api';
 
 export default ({user,setUser}) =>{
+
     const toggleMenu = function(){
         const icon = document.getElementById('icon');
         const nav  = document.getElementById('nav');
         icon.classList.toggle('close');
         nav.classList.toggle('show');
+    };
+
+    const toggleLink = function(){
+        if(window.innerWidth < 1000){
+            const icon = document.getElementById('icon');
+            const nav  = document.getElementById('nav');
+            icon.classList.toggle('close');
+            nav.classList.toggle('show');
+        }
     };
 
     async function logout(){
@@ -31,12 +41,12 @@ export default ({user,setUser}) =>{
                     <span className="line"></span>
                 </div>
                 <ul className="navbar-nav" id="nav">
-                    <li className="item-link"><NavLink to="/" exact activeClassName="active">Home</NavLink></li>
-                    <li className="item-link"><NavLink to="/blog" exact activeClassName="active">Blog</NavLink></li>
-                    {!user && <li className="item-link"><NavLink to="/sign" exact activeClassName="active">Connexion</NavLink></li>}
-                    {user && <li className="item-link"><NavLink to="/post">Post</NavLink></li>}
-                    {user && <li className="item-link"><NavLink to="/profile">profile</NavLink></li>}
-                    {user && <li className="item-link off"><Button circular color="red" icon="power off" onClick={logout}/></li>}
+                    <li onClick={toggleLink} className="item-link"><NavLink to="/" exact activeClassName="active">Home</NavLink></li>
+                    <li onClick={toggleLink} className="item-link"><NavLink to="/blog" activeClassName="active">Blog</NavLink></li>
+                    {!user && <li   onClick={toggleLink} className="item-link"><NavLink to="/sign" exact activeClassName="active">Connexion</NavLink></li>}
+                    {user && <li    onClick={toggleLink} className="item-link"><NavLink to="/post">Dashboard</NavLink></li>}
+                    {user && <li    onClick={toggleLink} className="item-link"><NavLink to="/profile">profile</NavLink></li>}
+                    {user && <li    onClick={toggleLink} className="item-link off"><Button circular color="red" icon="power off" onClick={logout}/></li>}
                 </ul>
             </div>
         </nav>

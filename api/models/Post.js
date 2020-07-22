@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema({
         type     : mongoose.Schema.Types.ObjectId,
         ref      : 'User'
     },
-    content      : {type: String, minlength: 1250, maxWidth: 12500, required: true, unique:true},
+    content      : {type: String, minlength: 1250, required: true, unique:true},
     attachment   : {type: String, required: true, trim:true},
     suggested    : {type: Boolean, required : true, default: false},
     published    : {type: Boolean, required : true, default: false},

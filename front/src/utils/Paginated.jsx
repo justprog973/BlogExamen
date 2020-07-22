@@ -1,13 +1,12 @@
 import React from 'react';
 import {Pagination, Grid} from 'semantic-ui-react';
 
-export default function Paginated({postsPerpage, totalPosts, paginate}) {
+export default function Paginated({postsPerpage, totalPosts, paginate, setOldPage}) {
     const pageNumbers = [];
 
     for (let i = 1; i <= Math.ceil(totalPosts / postsPerpage); i++) {
         pageNumbers.push(i);
     }
-    console.log(pageNumbers.length);
     return <Grid>
         <Grid.Row>
             <Grid.Column>
@@ -18,7 +17,10 @@ export default function Paginated({postsPerpage, totalPosts, paginate}) {
                     firstItem={null}
                     lastItem={null}
                     siblingRange={1}
-                    onPageChange={(event, data) => paginate(data.activePage)}
+                    onPageChange={(event, data) => {
+                        setOldPage(data.activePage);
+                        paginate(data.activePage)
+                    }}
                     totalPages={pageNumbers.length}
                 />
             </Grid.Column>

@@ -1,54 +1,107 @@
 //React
-import React,{useEffect,useState} from 'react';
+import React, {useEffect, useState} from 'react';
 //CSS
 import './style_blog.css';
-import {Select, Loader} from 'semantic-ui-react';
+import {Loader, Menu, Grid} from "semantic-ui-react";
 //Elements Perso
-import Header           from '../header/Header';
-import {useCategories}  from '../../hooks/categories';
-import {usePosts}       from '../../hooks/posts';
-import Card             from '../../elements/ui/card';
-import SelectCategory   from '../../utils/SelectCategory';
-import Paginated        from '../../utils/Paginated';
+import Header from '../header/Header';
+import {useCategories} from '../../hooks/categories';
+import {usePosts} from '../../hooks/posts';
+import CardPost from '../../elements/ui/Card';
+import Paginated from '../../utils/Paginated';
+import {useLocalStorage} from "../../hooks/useLocalStorage";
+import {capitalizeFirstLetter} from "../../utils/function";
 
 
-export default function Home  (){
+export default function Home() {
     const {categories, fetchCategories} = useCategories();
-    const {posts, fetchPosts} = usePosts();
+    const {posts, fetchPosts, loading: postLoading} = usePosts();
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerpage, setPostPerpage] = useState(6);
-    useEffect(()=>{
+    const [categ, setCateg] = useLocalStorage('categ', '');
+    const postsPerpage = 6;
+    const [oldPage, setOldPage] = useState(currentPage);
+
+    const indexOfLastPost = currentPage * postsPerpage;
+    const indexOfFirstPost = indexOfLastPost - postsPerpage;
+
+    //Change page
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
+    useEffect(() => {
         document.title = "Story Blog | Blog";
-        fetchCategories();
-        fetchPosts();
     });
+    /* eslint-disable */
+    useEffect(() => {
+        fetchCategories();
+        fetchPosts(categ);
+    }, [categ]);
 
-    const indexOfLastPost  = currentPage * postsPerpage;
-    const indexOfFirstPost = indexOfLastPost -postsPerpage;
-
-    //Change page 
-    const paginate = pageNumber => setCurrentPage(pageNumber)
     return (
         <React.Fragment>
             <Header/>
             <div className="ui container mt-30">
                 <div className="">
-                <h1>Les Articles</h1>
-                <SelectCategory categories={categories}/>
-                <div className="content-cards-posts">
-                    <CardPost posts={posts && posts.slice(indexOfFirstPost, indexOfLastPost)}/>
-                    <Paginated  
-                        totalPosts={posts && posts.length} 
-                        postsPerpage={postsPerpage}  paginate={paginate} />
-                </div>
+                    <h1>Les novelles </h1>
+                    <div className="content-cards-posts">
+                        <Grid reversed='computer tablet' stackable>
+                            <Grid.Row columns={2}>
+                                <Grid.Column computer={3} tablet={6} mobile={16}>
+                                    <DropdownCate
+                                        categories={categories}
+                                        setCateg={setCateg}
+                                        categ={categ}
+                                        setCurrentPage={setCurrentPage}
+                                        oldPage={oldPage}
+                                    />
+                                </Grid.Column>
+                                <Grid.Column computer={13} tablet={10} mobile={16}>
+                                    <CardPost posts={posts &&
+                                    posts.slice(indexOfFirstPost,
+                                    indexOfLastPost)}
+                                    postLoading={postLoading}
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        <Paginated
+                            totalPosts={posts && posts.length}
+                            postsPerpage={postsPerpage}
+                            paginate={paginate}
+                            setOldPage={setOldPage}
+                            currentPage={currentPage}
+                            oldPage={oldPage}
+                        />
+                    </div>
                 </div>
             </div>
         </React.Fragment>
     );
+};
+
+/**
+ *
+ * @param categories
+ * @param setCateg
+ * @param categ
+ * @param paginate
+ * @param currentPage
+ * @returns {*}
+ * @constructor
+ */
+function DropdownCate({categories, setCateg, categ, setCurrentPage, oldPage, }) {
+
+    return categories === null ? <Loader active/> :
+        <Menu size='large' vertical fluid>
+            <Menu.Item as='a' onClick={() => { setCurrentPage(oldPage); setCateg(null); }}>Catégories</Menu.Item>
+            {categories.map(c => <Menu.Item
+                onClick={() => {setCurrentPage(1); setCateg(c._id);}}
+                active={categ === c._id}
+                as='a'
+                color='blue'
+                key={c._id}>{capitalizeFirstLetter(c.name)}
+            </Menu.Item>)}
+        </Menu>;
 }
 
 
 
-const CardPost = function ({posts}){
-    return posts === null ? <Loader active inline="centered" /> :  <Card post={posts} />;
-}
