@@ -1,0 +1,53 @@
+@font-face {
+    font-family: 'adler';
+    src: url("/assets/fonts/adler.ttf") format("truetype");
+}
+
+.header-body{
+    height: 400px;
+    width: 100%;
+    background-image: url("/assets/img/writer.jpg");
+    background-position: 45% 60%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    border-bottom: 5px solid #79B7BB;
+    background-size: cover;
+    margin-top: -16.7px;
+}
+.filter{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1f476370;
+}
+.citation{
+    color: #FFFFFF;
+    text-align: justify;
+    font-size: 40px;
+}
+.marge{
+    padding: 0 50px 0 50px;
+    position: relative;
+}
+.citation-auteur{
+    position: absolute;
+    right: 50px;
+    bottom: 0;
+    color: #FFFFFF;
+    font-size: 30px;
+    font-style: italic;
+}
+
+@media screen and (max-width: 600px){
+    .citation{
+        font-size: 30px;
+        text-align: left;
+    }
+    .citation-auteur{
+        font-size: 15px;
+    }
+    .header-body{
+        height: 300;
+    }
+}

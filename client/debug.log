@@ -1,0 +1,7 @@
+[0907/230803.114:ERROR:process_info.cc(359)] UncheckedAllocate
+[0907/231859.695:ERROR:process_info.cc(359)] UncheckedAllocate
+[1021/133050.622:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\edge9\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\8bf7e6bd-feda-459b-8d1d-7c9380034f7a: Le chemin d’accès spécifié est introuvable. (0x3)
+[1021/133050.626:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\edge9\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\f0bb79aa-a711-40ae-acbb-cceeb54347e4: Le chemin d’accès spécifié est introuvable. (0x3)
+[1021/133050.627:ERROR:directory_reader_win.cc(43)] FindFirstFile: Le chemin d’accès spécifié est introuvable. (0x3)
+[1022/162900.686:ERROR:process_info.cc(359)] UncheckedAllocate
+[1022/172630.764:ERROR:directory_reader_win.cc(43)] FindFirstFile: Le chemin d’accès spécifié est introuvable. (0x3)

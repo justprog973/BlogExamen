@@ -7,8 +7,9 @@ const userSchema = new mongoose.Schema({
     firstname   : {type : String , trim:true},
     lastname    : {type : String , trim:true},
     isActive    : {type : Boolean, required: true, default: true},
-    urlAvatar   : {type : String , default : "avatar.png", trim:true},
     isAdmin     : {type: Boolean ,required : true , default: false},
+    resetToken  : String,
+    expireToken : Date,
     created_at  : {type : Date , default : Date.now},
     updated_at  : {type : Date , default : Date.now}
 });

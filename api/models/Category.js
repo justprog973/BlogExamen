@@ -5,7 +5,7 @@ const categorySchema = new mongoose.Schema({
         name: {type: String, required: true, trim: true, minlength: 4, unique: true}
 });
 
-categorySchema.virtual('posts',{
+categorySchema.virtual('post',{
     ref: 'Post',
     localField: '_id',
     foreignField: 'categories'

@@ -1,0 +1,21 @@
+.sidebar{
+    grid-column: 1;
+    height: 700px;
+    background-color: #f3f3f3;
+    margin-right: 50px;
+}
+
+.blog-body{
+    grid-column: 2;
+    height: 700px;
+    background-color: #f3f3f3;
+}
+.content-cards-posts{
+    min-height: calc(1141px - 1141px);
+}
+
+@media screen and (max-width: 991px){
+    .p-0{
+        padding: 0 !important;
+    }
+}

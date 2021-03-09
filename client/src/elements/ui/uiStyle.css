@@ -1,0 +1,107 @@
+.form-group{
+    display: grid;
+    grid-template: 35px 1fr / 1fr;
+    height: 100%;
+    margin-bottom: 15px;
+}
+.form-group input{
+    justify-self: center;
+    margin-top: -10px;
+    padding-left: 10px;
+}
+.form-group label{
+    margin-left: 60px;
+    font-weight: bold;
+    padding: 0 !important;
+}
+.form-button{
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    align-items: center;
+}
+.mb-10{
+    margin-bottom: 10px;
+}
+.form-button .btn-login:hover{
+    cursor: pointer;
+    background-color: rgb(87, 173, 180);
+}
+.form-group input:focus{
+    border-color: rgb(121, 183, 187) !important;
+    outline: none;
+    transition: border .1s;
+    -webkit-transition: border .1s;
+    -moz-transition: border .1s;
+    -ms-transition: border .1s;
+    -o-transition: border .1s;
+}
+.error-user{
+    color: red;
+    width: 260px;
+    padding: 5px;
+    margin: auto;
+    font-size: 11px;
+}
+@media screen and (max-width: 500px){
+    .form-group label{
+        width: 260px;
+        margin-left: 10px;
+        justify-self: center;
+    }
+    .form-group label{
+        margin-left: 20px;
+    }
+}
+
+@media screen and (max-width: 668px){
+    .card-format .card{
+        width: 100% !important;
+    }
+}
+.card-format{
+    display: flex;
+    justify-content: space-between;
+}
+.card-format:after{
+    height: 0;
+    width:  300px;
+    content: "";
+}
+.h-300{
+    min-height: 300px;
+}
+
+
+.ql-editor {
+    overflow-y: scroll;
+    resize: vertical;
+}
+
+.quill .ql-container {
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    background: #fefcfc;
+}
+
+/* Snow Theme */
+.quill .ql-snow.ql-toolbar {
+    display: block;
+    background: #eaecec;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+}
+
+.quill .ql-editor {
+    min-height: 18em;
+}
+
+.themeSwitcher {
+    margin-top: 0.5em;
+    font-size: small;
+}
+
+.email-select-tab:hover{
+    background-color: #79B7BB30 !important;
+    cursor: pointer;
+}
