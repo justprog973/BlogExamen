@@ -1,9 +1,10 @@
-const {emailRegex} = require("../utils/regex");
+const { emailRegex } = require("../utils/regex");
 const router = require('express').Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const Post = require("../models/Post");
 
-router.put('/profile/update/:id?', function (req, res) {
+router.put('/profile/update/:id?', function(req, res) {
     try {
         let fieldUser = {
             username: req.body.username,
@@ -15,7 +16,7 @@ router.put('/profile/update/:id?', function (req, res) {
         };
         console.log(fieldUser);
         let user = User.findById(req.params.id ? req.params.id : req.user.id);
-        user.exec(async function (err, u) {
+        user.exec(async function(err, u) {
             if (err) {
                 throw err;
             }
@@ -35,14 +36,14 @@ router.put('/profile/update/:id?', function (req, res) {
             if (fieldUser.email) {
                 u.email = fieldUser.email.toLowerCase();
             }
-            if(!fieldUser.email && !fieldUser.username) {
+            if (!fieldUser.email && !fieldUser.username) {
                 u.isActive = fieldUser.isActive;
             }
 
             u.updated_at = new Date();
-            u.save(function (err, newU) {
+            u.save(function(err, newU) {
                 if (err) {
-                    return res.status(400).json({errors: {message: err.message}});
+                    return res.status(400).json({ errors: { message: err.message } });
                 }
                 let newUO = {
                     _id: newU._id,
@@ -59,22 +60,37 @@ router.put('/profile/update/:id?', function (req, res) {
             });
         });
     } catch (e) {
-        return res.status(500).json({errors: {message: e.message}});
+        return res.status(500).json({ errors: { message: e.message } });
     }
 });
 
-router.delete('/delete/:id', function (req, res) {
+router.delete('/delete/:id', function(req, res) {
     const id = req.params.id;
-    User.findOneAndDelete({_id: id}).then(function () {
-        req.logOut();
-        return res.status(200).json({success: {message: 'Votre compte a bien été supprimé.'}});
-    }).catch(e => res.status(500).json({errors: {message: e.message}}));
+    let authorPost = null;
+
+    try {
+        authorPost = Post.find(req.params.id ? { author: req.params.id } : {}).sort({ created_at: -1 }).populate('author', 'username');
+        authorPost.exec(function(err, p) {
+            if (err) {
+                return res.status(400).json({ errors: { message: err.message } });
+            }
+            if (!p) {
+                User.findOneAndDelete({ _id: id }).then(function() {
+                    req.logOut();
+                    return res.status(200).json({ success: { message: 'Votre compte a bien été supprimé.' } });
+                }).catch(e => res.status(500).json({ errors: { message: e.message } }));
+            } else {
+                return res.status(400).json({ errors: { message: 'Ce compte est lié à des posts veuillez les supprimer avant de vouloir suppimer votre compte.' } });
+            }
+        });
+    } catch (err) {
+        return res.status(500).json({ errors: { message: err.message } });
+    }
 });
 
-router.get('/logout', function (req, res) {
+router.get('/logout', function(req, res) {
     req.logOut();
-    return res.status(200).json({success: {message: 'Vous avez été deconecté avec succès.'}});
+    return res.status(200).json({ success: { message: 'Vous avez été deconecté avec succès.' } });
 });
 
 module.exports = router;
-

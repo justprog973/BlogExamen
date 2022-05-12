@@ -1,24 +1,24 @@
 //React
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 //CSS
 import './style_blog.css';
-import {Loader, Menu, Container, Card, Feed, Grid} from "semantic-ui-react";
+import { Loader, Menu, Container, Card, Feed, Grid } from "semantic-ui-react";
 //Elements Perso
 import Header from '../Header/Header';
-import {useCategories} from '../../hooks/categories';
-import {usePosts} from '../../hooks/posts';
+import { useCategories } from '../../hooks/categories';
+import { usePosts } from '../../hooks/posts';
 import CardPost from '../../elements/ui/Card';
 import Paginated from '../../utils/Paginated';
-import {capitalizeFirstLetter, momentFr} from "../../utils/function";
+import { capitalizeFirstLetter, momentFr } from "../../utils/function";
 import SelectCategory from "../../utils/SelectCategory";
-import {Link} from "react-router-dom";
-import {useViews} from "../../hooks/views";
+import { Link } from "react-router-dom";
+import { useViews } from "../../hooks/views";
 
 
 export default function Blog() {
-    const {categories, fetchCategories} = useCategories();
-    const {posts, fetchPosts, loading: postLoading, oldPosts} = usePosts();
-    const {views, viewsPost} = useViews();
+    const { categories, fetchCategories } = useCategories();
+    const { posts, fetchPosts, loading: postLoading, oldPosts } = usePosts();
+    const { views, viewsPost } = useViews();
     const [currentPage, setCurrentPage] = useState(1);
     const [categ, setCateg] = useState(null);
     const [oldPage, setOldPage] = useState(currentPage);
@@ -42,11 +42,11 @@ export default function Blog() {
     }, [categ]);
 
     useEffect(() => {
-        return () => {mounted.current = false;}
-    },[]);
+        return () => { mounted.current = false; }
+    }, []);
 
     return <>
-        <Header/>
+        <Header />
         <Container className="mt-30 mb-50 ml-mr-10">
             <div className="content-cards-posts">
                 <Grid stackable>
@@ -63,7 +63,7 @@ export default function Blog() {
                             <SelectCategory
                                 oldPage={oldPage}
                                 categories={categories}
-                                actions={{filter: setCateg, page: setCurrentPage}}
+                                actions={{ filter: setCateg, page: setCurrentPage }}
                                 fluid
                             />
                             <Card fluid>
@@ -76,7 +76,7 @@ export default function Blog() {
                                             <Feed>
                                                 <Feed.Event>
                                                     <Feed.Content>
-                                                        <Feed.Date content={momentFr(p.created_at, 'time')}/>
+                                                        <Feed.Date content={momentFr(p.created_at, 'time')} />
                                                         <Feed.Summary>
                                                             <Link to={`/blog/post/${p._id}`}>{p.title}</Link>
                                                         </Feed.Summary>
@@ -90,10 +90,10 @@ export default function Blog() {
                         </Grid.Column>
                         <Grid.Column computer={13} tablet={16}>
                             <CardPost posts={posts &&
-                            posts.slice(indexOfFirstPost,
-                                indexOfLastPost)}
-                                      postLoading={postLoading}
-                                      views={views}
+                                posts.slice(indexOfFirstPost,
+                                    indexOfLastPost)}
+                                postLoading={postLoading}
+                                views={views}
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -125,9 +125,9 @@ export default function Blog() {
  * @returns {*}
  * @constructor
  */
-function DropdownCate({categories, setCateg, categ, setCurrentPage, oldPage,}) {
+function DropdownCate({ categories, setCateg, categ, setCurrentPage, oldPage, }) {
 
-    return categories === null ? <Loader active/> :
+    return categories === null ? <Loader active /> :
         <Menu size='large' vertical fluid>
             <Menu.Item as='a' onClick={() => {
                 setCurrentPage(oldPage);
