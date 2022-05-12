@@ -1,21 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {Container, Form, Grid, Icon, Label, Segment, Image, Message, Button, Modal} from 'semantic-ui-react';
-import {ButtonPrimary, ButtonSecondary} from '../../elements/ui/Button';
+import React, { useEffect, useRef, useState } from 'react';
+import { Container, Form, Grid, Icon, Label, Segment, Image, Message, Button, Modal } from 'semantic-ui-react';
+import { ButtonPrimary, ButtonSecondary } from '../../elements/ui/Button';
 import './style_profile.css';
-import {capitalizeFirstLetter, momentFr} from "../../utils/function";
-import {nameRegex, passwordRegex, usernameRegex} from "../../utils/regex";
-import {useUsers} from "../../hooks/users";
-import {formToJson} from "../../utils/api";
-import notify from "../../utils/notify";
+import { capitalizeFirstLetter, momentFr } from "../../utils/function";
+import { nameRegex, passwordRegex, usernameRegex } from "../../utils/regex";
+import { useUsers } from "../../hooks/users";
+import { formToJson } from "../../utils/api";
 
-export default function Profile({user, action}) {
+export default function Profile({ user, action }) {
     const [errors, setErrors] = useState(null);
-    const {updateUser, loading, deleteUser} = useUsers();
+    const { updateUser, loading, deleteUser } = useUsers();
+    const mounted = useRef(true);
 
     useEffect(function () {
-        document.title = 'Story Blog | Profile';
-        window.scrollTo({top: 0, behavior: "smooth"});
-    });
+        if (mounted.current) {
+            document.title = 'Story Blog | Profile';
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+        return () => mounted.current = false;
+
+    }, []);
 
     const handleSubmit = function (e) {
         const form = e.target;
@@ -80,7 +84,7 @@ export default function Profile({user, action}) {
             password.length === 0) {
             updateUser(user, formToJson(form), action);
             form.reset();
-            window.scrollTo({top: 0, behavior: "smooth"});
+            window.scrollTo({ top: 0, behavior: "smooth" });
         }
     };
 
@@ -91,48 +95,49 @@ export default function Profile({user, action}) {
         </h1>
         <Segment>
             {errors &&
-            <Message
-                error
-                header='Vous avez des erreurs !'
-                list={errors}
-            />}
+                <Message
+                    error
+                    header='Vous avez des erreurs !'
+                    list={errors}
+                />}
             <Grid divided="vertically" verticalAlign='middle' stackable>
                 <Grid.Row columns={2}>
                     <Grid.Column computer={8} tablet={16} className="centered-img-profile">
-                        <Image src={`/assets/img/undraw_profile.svg`} alt="undraw-profile"/>
+                        <Image src={`/assets/img/undraw_profile.svg`} alt="undraw-profile" />
                     </Grid.Column>
                     <Grid.Column computer={8} tablet={16} className="fom-index-profile">
                         <Form size='large' onSubmit={handleSubmit}>
                             <Form.Field>
                                 <label>Username</label>
-                                <input maxLength={10} name='username' defaultValue={capitalizeFirstLetter(user.username)}/>
+                                <input maxLength={10} name='username'
+                                    defaultValue={capitalizeFirstLetter(user.username)} />
                             </Form.Field>
                             <Form.Field>
                                 <label>Email</label>
-                                <input name='email' defaultValue={user.email} disabled/>
+                                <input name='email' defaultValue={user.email} disabled />
                             </Form.Field>
                             <Form.Group widths='equal'>
                                 <Form.Field>
                                     <label>Nom</label>
-                                    <input name='lastname' defaultValue={ user.lastname && user.lastname.toUpperCase()}/>
+                                    <input name='lastname' defaultValue={user.lastname && user.lastname.toUpperCase()} />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>Prénom</label>
-                                    <input name='firstname' defaultValue={capitalizeFirstLetter(user.firstname)}/>
+                                    <input name='firstname' defaultValue={capitalizeFirstLetter(user.firstname)} />
                                 </Form.Field>
                             </Form.Group>
                             <Form.Field className='hr-styled'>
                                 <span className='color-red'>Ne pas remplire si vous ne voulez pas modifier le mot de
-                                    passe <Icon name='angle down'/></span>
+                                    passe <Icon name='angle down' /></span>
                             </Form.Field>
                             <Form.Group widths='equal'>
                                 <Form.Field>
                                     <label>Nouveau mot de passe</label>
-                                    <input type='password' name='password'/>
+                                    <input type='password' name='password' />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>Confirmer mot de passe</label>
-                                    <input type='password' name='confirm_password'/>
+                                    <input type='password' name='confirm_password' />
                                 </Form.Field>
                             </Form.Group>
                             <Form.Field>
@@ -145,11 +150,11 @@ export default function Profile({user, action}) {
                                     <Grid.Row stretched>
                                         <Grid.Column computer={8} tablet={8} mobile={16}>
                                             <ButtonPrimary loading={loading} type='submit'
-                                                           width={"100%"}>Modifier</ButtonPrimary>
+                                                width={"100%"}>Modifier</ButtonPrimary>
                                         </Grid.Column>
                                         <Grid.Column computer={8} tablet={8} mobile={16}>
                                             <ButtonSecondary type='reset' className='mt-10-mb' width={"100%"}
-                                                             onClick={() => setErrors(null)}>Reset</ButtonSecondary>
+                                                onClick={() => setErrors(null)}>Reset</ButtonSecondary>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
@@ -163,13 +168,14 @@ export default function Profile({user, action}) {
                     <Grid.Column computer={4} mobile={16}>
                         <Modal
                             size='mini'
-                            trigger={<Button color='red' size='large' fluid className='fom-index-profile right floated btn-post-form' content='Sumprimer mon compte'/>}
+                            trigger={<Button color='red' size='large' fluid
+                                className='fom-index-profile right floated btn-post-form'
+                                content='Sumprimer mon compte' />}
                             header='SUPPRESSION'
                             content={`Voulez vous vraiment supprimer votre compte ?`}
                             actions={['NON', {
                                 key: 'done', content: 'OUI', negative: true, onClick: async () => {
                                     await deleteUser(user._id, action.onConnect);
-                                    notify('success','Votre compte a bien été supprimé.');
                                 }
                             }]}
                         />
@@ -177,7 +183,7 @@ export default function Profile({user, action}) {
                 </Grid.Row>
             </Grid>
             <div className="ui abstract">
-                <img src={"/assets/img/bg.png"} alt="bg"/>
+                <img src={"/assets/img/bg.png"} alt="bg" />
             </div>
         </Segment>
     </Container>
